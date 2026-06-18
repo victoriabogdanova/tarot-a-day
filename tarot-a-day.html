@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarot a Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ── */
+:root {
+  --bg:        #f7f3ec;
+  --bg2:       #ede7da;
+  --surface:   #ffffff;
+  --border:    #c4b89a;
+  --border2:   #8a7a60;
+  --text:      #1a1208;
+  --text2:     #3d3420;
+  --text3:     #5c4f38;
+  --gold:      #7a5c10;
+  --gold-bg:   #f5e8c8;
+  --violet:    #2d1a6b;
+  --violet2:   #4a2d8a;
+  --violet-bg: #ede8f8;
+  --card-bg:   #fffef9;
+  --card-border: #b09050;
+  --back-bg:   #2a1a5e;
+  --back-border: #6a4abf;
+  --back-text: #d4c8f8;
+  --pill-bg:   #f5e6d0;
+  --pill-text: #6b3010;
+  --accent:    #5c3d8a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #0f0a1a;
+    --bg2:       #1a1230;
+    --surface:   #1e1535;
+    --border:    #3d2d6a;
+    --border2:   #6a50a8;
+    --text:      #f0ebff;
+    --text2:     #cdc0f0;
+    --text3:     #a090d0;
+    --gold:      #e8c870;
+    --gold-bg:   #2a1f00;
+    --violet:    #c8b0f8;
+    --violet2:   #a080e8;
+    --violet-bg: #1a1030;
+    --card-bg:   #fffef9;
+    --card-border: #c9a84c;
+    --back-bg:   #1a0f3a;
+    --back-border: #7c5cbf;
+    --back-text: #c8b8f0;
+    --pill-bg:   #3a1a00;
+    --pill-text: #f0b070;
+    --accent:    #b090f0;
+  }
+}
+
+/* Manual dark mode override */
+[data-theme="dark"] {
+  --bg:        #0f0a1a;
+  --bg2:       #1a1230;
+  --surface:   #1e1535;
+  --border:    #3d2d6a;
+  --border2:   #6a50a8;
+  --text:      #f0ebff;
+  --text2:     #cdc0f0;
+  --text3:     #a090d0;
+  --gold:      #e8c870;
+  --gold-bg:   #2a1f00;
+  --violet:    #c8b0f8;
+  --violet2:   #a080e8;
+  --violet-bg: #1a1030;
+  --card-bg:   #fffef9;
+  --card-border: #c9a84c;
+  --back-bg:   #1a0f3a;
+  --back-border: #7c5cbf;
+  --back-text: #c8b8f0;
+  --pill-bg:   #3a1a00;
+  --pill-text: #f0b070;
+  --accent:    #b090f0;
+}
+
+[data-theme="light"] {
+  --bg:        #f7f3ec;
+  --bg2:       #ede7da;
+  --surface:   #ffffff;
+  --border:    #c4b89a;
+  --border2:   #8a7a60;
+  --text:      #1a1208;
+  --text2:     #3d3420;
+  --text3:     #5c4f38;
+  --gold:      #7a5c10;
+  --gold-bg:   #f5e8c8;
+  --violet:    #2d1a6b;
+  --violet2:   #4a2d8a;
+  --violet-bg: #ede8f8;
+  --card-bg:   #fffef9;
+  --card-border: #b09050;
+  --back-bg:   #2a1a5e;
+  --back-border: #6a4abf;
+  --back-text: #d4c8f8;
+  --pill-bg:   #f5e6d0;
+  --pill-text: #6b3010;
+  --accent:    #5c3d8a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 5rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── Header ── */
+header {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+.header-text { text-align: left; }
+.site-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2rem, 4vw, 1.7rem);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.date-line {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--text3);
+  margin-top: 0.3rem;
+  letter-spacing: 0.03em;
+}
+
+/* theme toggle */
+.theme-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.theme-btn:hover { background: var(--bg2); border-color: var(--border2); }
+.theme-icon { font-size: 1rem; }
+
+/* ── Card ── */
+.card-scene {
+  perspective: 1200px;
+  width: 210px;
+  margin: 0 auto 1.25rem;
+  cursor: pointer;
+}
+.card-inner {
+  width: 210px;
+  height: 355px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(.4,0,.2,1);
+  border-radius: 14px;
+}
+.card-inner.revealed { transform: rotateY(180deg); }
+.face {
+  position: absolute; inset: 0;
+  border-radius: 14px;
+  backface-visibility: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
+/* back */
+.face-back {
+  background: var(--back-bg);
+  border: 1.5px solid var(--back-border);
+  padding: 1.5rem;
+}
+.back-ornament { opacity: 0.65; }
+.tap-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  color: var(--back-text);
+  margin-top: 1rem;
+  text-transform: uppercase;
+}
+
+/* front */
+.face-front {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  transform: rotateY(180deg);
+  padding: 1.25rem 1rem;
+  gap: 0;
+}
+.card-arcana {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: #7a5c10;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.card-symbol { font-size: 3rem; margin: 0.25rem 0; }
+.card-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #2d1a6b;
+  text-align: center;
+  margin-bottom: 0.2rem;
+  line-height: 1.2;
+}
+.card-keywords {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: #7a5c10;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.card-divider {
+  width: 50%;
+  height: 0.5px;
+  background: #b09050;
+  margin: 0 auto 0.55rem;
+}
+.reversed-pill {
+  font-size: 0.52rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: #f5e6d0;
+  color: #6b3010;
+  padding: 2px 10px;
+  border-radius: 20px;
+  margin-bottom: 0.4rem;
+  display: none;
+  font-weight: 500;
+}
+.card-meaning {
+  font-size: 0.76rem;
+  color: #2d1a6b;
+  text-align: center;
+  line-height: 1.65;
+  font-style: italic;
+  padding: 0 0.25rem;
+}
+
+/* ── Flip toggle ── */
+.flip-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  padding: 6px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.flip-btn:hover { background: var(--bg2); border-color: var(--border2); color: var(--text); }
+.flip-btn svg { transition: transform 0.4s; flex-shrink: 0; }
+.flip-btn.active svg { transform: rotate(180deg); }
+
+/* ── Panels ── */
+.panels { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 1.25rem; }
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  background: var(--surface);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s, border-color 0.3s;
+  pointer-events: none;
+}
+.panel.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+.panel-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+
+/* lore panel */
+.lore-section { margin-bottom: 1rem; }
+.lore-section:last-child { margin-bottom: 0; }
+.lore-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.lore-text {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.theme-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.5rem;
+}
+.chip {
+  font-size: 0.72rem;
+  background: var(--violet-bg);
+  color: var(--violet);
+  border: 1px solid var(--border);
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+/* advice panel */
+.advice-text {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text);
+  font-style: italic;
+}
+.advice-text::before {
+  content: '"';
+  color: var(--gold);
+  font-size: 1.4rem;
+  line-height: 0;
+  vertical-align: -0.3em;
+  margin-right: 2px;
+}
+.advice-text::after {
+  content: '"';
+  color: var(--gold);
+  font-size: 1.4rem;
+  line-height: 0;
+  vertical-align: -0.3em;
+  margin-left: 2px;
+}
+
+/* journal prompts */
+.prompt-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.prompt-list li { display: flex; gap: 0.75rem; align-items: flex-start; }
+.prompt-num {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  color: var(--gold);
+  margin-top: 0.3rem;
+  min-width: 1.2rem;
+}
+.prompt-text {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--text2);
+}
+
+/* draw btn */
+.draw-btn {
+  margin: 0.5rem auto 0;
+  display: block;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.draw-btn:hover { background: var(--violet-bg); border-color: var(--violet2); color: var(--violet); }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-inner, .panel, .flip-btn svg { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-text">
+    <div class="site-title">Tarot a Day</div>
+    <div class="date-line" id="date-line"></div>
+  </div>
+  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle light/dark mode">
+    <span class="theme-icon" id="theme-icon">☀️</span>
+    <span id="theme-label">Light</span>
+  </button>
+</header>
+
+<!-- Card -->
+<div class="card-scene" id="card-scene" onclick="toggleFlip()" title="Tap to flip" role="button" tabindex="0" aria-label="Tarot card — tap to reveal">
+  <div class="card-inner" id="card-inner">
+    <div class="face face-back">
+      <svg class="back-ornament" width="90" height="90" viewBox="0 0 90 90" fill="none" role="img" aria-label="Decorative card back pattern">
+        <circle cx="45" cy="45" r="35" stroke="#b39ddb" stroke-width="0.8"/>
+        <circle cx="45" cy="45" r="22" stroke="#b39ddb" stroke-width="0.5"/>
+        <line x1="45" y1="10" x2="45" y2="80" stroke="#b39ddb" stroke-width="0.5"/>
+        <line x1="10" y1="45" x2="80" y2="45" stroke="#b39ddb" stroke-width="0.5"/>
+        <line x1="20" y1="20" x2="70" y2="70" stroke="#b39ddb" stroke-width="0.5"/>
+        <line x1="70" y1="20" x2="20" y2="70" stroke="#b39ddb" stroke-width="0.5"/>
+        <polygon points="45,16 52,38 75,38 57,52 64,74 45,60 26,74 33,52 15,38 38,38"
+          stroke="#c9a84c" stroke-width="0.8" fill="none"/>
+      </svg>
+      <div class="tap-label">Tap to reveal</div>
+    </div>
+    <div class="face face-front">
+      <div class="card-arcana" id="card-arcana"></div>
+      <div class="card-symbol" id="card-symbol"></div>
+      <div class="card-title" id="card-title"></div>
+      <div class="card-keywords" id="card-keywords"></div>
+      <div class="card-divider"></div>
+      <div class="reversed-pill" id="reversed-pill">Reversed</div>
+      <div class="card-meaning" id="card-meaning-front"></div>
+    </div>
+  </div>
+</div>
+
+<button class="flip-btn" id="flip-btn" onclick="toggleFlip()" style="display:none" aria-label="Toggle card visibility">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+    <path d="M7 1v12M7 13l-3-3M7 13l3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span id="flip-label">Hide card</span>
+</button>
+
+<div class="panels" id="panels">
+  <!-- Lore panel -->
+  <div class="panel" id="panel-lore">
+    <div class="panel-label">About this card</div>
+    <div class="lore-section">
+      <div class="lore-heading">Symbolism &amp; imagery</div>
+      <div class="lore-text" id="lore-symbolism"></div>
+    </div>
+    <div class="lore-section">
+      <div class="lore-heading">Core themes</div>
+      <div class="theme-chips" id="lore-themes"></div>
+    </div>
+    <div class="lore-section">
+      <div class="lore-heading">In a reading</div>
+      <div class="lore-text" id="lore-in-reading"></div>
+    </div>
+  </div>
+
+  <!-- Advice panel -->
+  <div class="panel" id="panel-advice">
+    <div class="panel-label">Today's invitation</div>
+    <div class="advice-text" id="advice-text"></div>
+  </div>
+
+  <!-- Journal prompts -->
+  <div class="panel" id="panel-prompts">
+    <div class="panel-label">Journal prompts</div>
+    <ul class="prompt-list" id="prompt-list"></ul>
+  </div>
+</div>
+
+<button class="draw-btn" id="draw-btn" onclick="drawRandom()" style="display:none; margin-top: 2rem;">
+  Draw a different card
+</button>
+
+<script>
+const CARDS = [
+  {
+    num:"0", name:"The Fool", symbol:"🌟", keywords:"New beginnings · Spontaneity · Leap of faith",
+    upright:"A new journey begins. Step forward with an open heart — the path reveals itself as you walk it.",
+    reversed:"Recklessness clouds your path. Pause before leaping — something important hasn't been considered yet.",
+    symbolism:"In the Rider-Waite deck, the Fool stands at the edge of a cliff, pack over his shoulder, white rose in hand, gazing upward with a small dog at his heels. He is numbered zero — before all things, outside all sequence. The cliff represents the unknown, the rose purity of intention, and the dog both worldly instinct and the voice of caution he cheerfully ignores. His colourful coat is adorned with wheels and eagles — symbols of movement and vision.",
+    themes:["Beginnings","Innocence","Risk","Freedom","Trust","Openness","The unknown","Play"],
+    in_reading:"The Fool appears when a new chapter is beginning — a journey, a project, a relationship, or an inner shift. It asks you to bring beginner's mind to whatever is unfolding. Upright, it's an invitation to step forward with openness rather than caution. Reversed, it can signal naïveté, poor planning, or a leap being taken before you're truly ready.",
+    advice_upright:"Something new is asking for your full, unguarded yes. Let yourself begin without needing to see the whole path first.",
+    advice_reversed:"Before you move, sit still. The impulsive choice and the courageous one feel similar — take a breath to tell them apart."
+  },
+  {
+    num:"I", name:"The Magician", symbol:"⚡", keywords:"Willpower · Skill · Manifestation",
+    upright:"You have everything you need. Focus your intention and turn your vision into reality.",
+    reversed:"Potential sits untapped or misused. Doubt and distraction scatter your power — what are you avoiding?",
+    symbolism:"The Magician stands at a table bearing all four suit symbols — wand, cup, sword, pentacle — representing the four elements at his command. One hand points a wand to the sky, the other to the earth: 'As above, so below.' The infinity symbol floats above his head. Around him, red roses and white lilies bloom — passion and purity, desire and clarity. He does not wait for resources; he uses what is already present.",
+    themes:["Will","Skill","Focus","Manifestation","Resourcefulness","Alchemy","Action","Power"],
+    in_reading:"The Magician appears when all the pieces are in place for something to happen — if you choose to act. It's a card of agency and intentionality. Upright, it says: you have the tools, the talent, and the timing — now use them. Reversed, it can indicate manipulation, self-deception, or abilities being squandered through distraction or misuse.",
+    advice_upright:"Don't wait for better conditions. The resources you have right now are enough to begin — and beginning is everything.",
+    advice_reversed:"Audit where your energy actually goes today. What you give attention to grows — and something is growing that you didn't choose."
+  },
+  {
+    num:"II", name:"The High Priestess", symbol:"🌙", keywords:"Intuition · Mystery · Inner knowing",
+    upright:"Listen beneath the noise. Answers are within you — trust what doesn't need proof.",
+    reversed:"Your intuition is being suppressed or ignored. What do you already know that you're refusing to hear?",
+    symbolism:"The High Priestess sits between two pillars — one black (Boaz, strength), one white (Jachin, establishment) — at the threshold of the Temple of Solomon. She holds a partially hidden scroll of the Torah, knowledge not fully revealed. Behind her, a pomegranate-patterned veil conceals a shimmering sea. Her blue robes flow like water, and a crescent moon rests beneath her feet. She does not speak; she holds. She is the keeper of what cannot be said.",
+    themes:["Intuition","Mystery","Patience","Depth","The subconscious","Receptivity","Sacred knowledge","Silence"],
+    in_reading:"The High Priestess is the card of knowing without explanation — the gut feeling, the dream that lingers, the sense that something is happening beneath the surface. Upright, she calls for stillness, non-action, and deep listening. Reversed, she can indicate a blocked or overridden intuition, secrets, or information being withheld — either from you or by you.",
+    advice_upright:"You already know more than you're letting yourself know. Today, listen to the part of you that doesn't make arguments.",
+    advice_reversed:"The thing you keep not-thinking-about is exactly what needs your attention. Give it five minutes and see what surfaces."
+  },
+  {
+    num:"III", name:"The Empress", symbol:"🌺", keywords:"Abundance · Nurture · Creativity",
+    upright:"Growth and beauty flourish when tended with love. Receive as generously as you give.",
+    reversed:"Something needs nurturing that's been neglected. The well may be running dry — restore it before drawing from it.",
+    symbolism:"The Empress is seated on a cushioned throne in a lush field of wheat, surrounded by a forest of evergreens and a flowing stream. She wears a crown of twelve stars and a robe of pomegranates — symbols of fertility and cycles. The Venus symbol appears on a heart-shaped shield at her feet. She is relaxed, not effortful — abundance flows around her because she is not clutching or striving. She creates by being.",
+    themes:["Fertility","Abundance","Creativity","Sensuality","Motherhood","Nature","Nurture","Pleasure"],
+    in_reading:"The Empress is the card of creative fullness and earthly abundance. She often appears around times of literal or metaphorical fertility — a project, a relationship, a period of growth. Upright, she invites you to slow down, enjoy what's flourishing, and trust that nurturing produces more than forcing. Reversed, she can signal creative blocks, over-giving, neglect of the body, or a relationship where care has dried up.",
+    advice_upright:"What would your day look like if you treated your own needs with the same generosity you offer others? Try that.",
+    advice_reversed:"You cannot pour from an empty vessel, but you've been trying. Before anything else today, do one thing purely for your own restoration."
+  },
+  {
+    num:"IV", name:"The Emperor", symbol:"🏛️", keywords:"Authority · Structure · Stability",
+    upright:"Discipline and steady leadership are your greatest assets right now. Build on solid foundations.",
+    reversed:"Control or rigidity stifles what needs room to breathe. Where have structures become walls?",
+    symbolism:"The Emperor sits on a stone throne carved with ram heads (Aries, the sign of leadership and drive), holding an ankh sceptre in one hand and an orb in the other. He is fully armoured beneath his red robes — power dressed for conflict, even in rest. The mountains behind him are barren: authority has shaped the terrain. He is the structures we build, the laws we live by, the father-energy that protects by ordering.",
+    themes:["Authority","Order","Structure","Discipline","Leadership","Protection","Logic","Control"],
+    in_reading:"The Emperor asks whether your structures are serving you or constraining you. Upright, he's an ally — calling for organisation, clear boundaries, and decisive action. He is the card of building something that lasts. Reversed, he can warn of authoritarianism, rigidity, abuse of power, or an inability to soften when softness is what's needed.",
+    advice_upright:"The most freeing thing you can do today might be to set a clear rule for yourself — and keep it.",
+    advice_reversed:"Notice where you're using 'structure' as a way to avoid feeling. Some things can't be organised into order — they have to be felt."
+  },
+  {
+    num:"V", name:"The Hierophant", symbol:"🗝️", keywords:"Tradition · Wisdom · Spiritual guidance",
+    upright:"Seek wisdom from those who've walked this path. Community and shared meaning offer real grounding.",
+    reversed:"Question what you've been handed without examining it. The path forward may require stepping outside inherited beliefs.",
+    symbolism:"The Hierophant sits between two pillars in religious robes, one hand raised in the papal blessing gesture (two fingers up, two down — the visible and the hidden), the other holding a triple-cross sceptre. Two acolytes kneel before him. The crossed keys at his feet unlock the material and spiritual worlds. He is the institutional bridge between the sacred and the everyday — the one who translates mystery into practice.",
+    themes:["Tradition","Institution","Ritual","Mentorship","Community","Doctrine","Conformity","Spiritual authority"],
+    in_reading:"The Hierophant represents established wisdom — religion, education, cultural tradition, formal mentorship. Upright, he invites you to seek guidance, honour lineage, or find meaning within a community or system. He can also point to a teacher or guide appearing in your life. Reversed, he challenges you to examine what you've inherited versus what you've actually chosen — and whether they're the same.",
+    advice_upright:"Seek out a teacher, a community, or a tradition that resonates. There is wisdom that can only be passed, not invented.",
+    advice_reversed:"Not all inherited wisdom is wrong — but today, ask which of your beliefs were chosen and which were simply absorbed."
+  },
+  {
+    num:"VI", name:"The Lovers", symbol:"💞", keywords:"Choice · Values · Deep connection",
+    upright:"A meaningful choice awaits. Alignment between what you value and how you live brings real harmony.",
+    reversed:"Disharmony or an avoided decision lingers. What values are quietly in conflict within you?",
+    symbolism:"A man and woman stand beneath the Archangel Raphael (healer of the heart), who blesses them from above. Behind the woman stands the Tree of Knowledge with the serpent — consciousness, wisdom, and temptation. Behind the man, the Tree of Life blazes. A mountain rises between them. This is not merely a love card: it is the card of alignment, of the choice that requires you to know who you are.",
+    themes:["Choice","Love","Alignment","Values","Partnership","Duality","Desire","Integration"],
+    in_reading:"Despite its name, the Lovers is primarily about choice — specifically, the kind of choice that reveals what you truly value. It often appears when a significant decision is before you, romantic or otherwise. Upright, it signals a moment of genuine alignment: between people, or between your inner and outer life. Reversed, it can point to misalignment, shallow choices, or a relationship (or value system) in need of honest examination.",
+    advice_upright:"Don't choose what looks right from the outside. Choose what is true to who you actually are — even if that's harder to explain.",
+    advice_reversed:"The discomfort you feel isn't confusion. It's the signal that you know what you want but are afraid to choose it."
+  },
+  {
+    num:"VII", name:"The Chariot", symbol:"🔱", keywords:"Determination · Triumph · Direction",
+    upright:"You have the will to overcome. Move forward — opposing forces can be harnessed, not just fought.",
+    reversed:"Scattered direction or lack of control holds you back. Choose one direction before pressing ahead.",
+    symbolism:"A warrior rides a chariot drawn by two sphinxes — one black, one white — without reins. He controls them through will alone. On his chest, a square (earth, groundedness) and two crescents (the emotional forces he commands). Above him, a canopy of stars. The city is behind him; he rides toward the open world. The Chariot is not about being pulled by life — it's about directing the full complexity of your nature toward a single point.",
+    themes:["Drive","Control","Momentum","Willpower","Victory","Focus","Ambition","Tension harnessed"],
+    in_reading:"The Chariot appears when the energy to succeed is present — but requires direction and control to become effective. It's a card of triumph through focused will, not brute force. Upright, it says: commit and move. Reversed, it warns of aggression without direction, or a situation where competing internal forces are pulling you apart rather than forward.",
+    advice_upright:"Stop deliberating. Pick the one thing that matters most today and give it everything — the momentum you create will carry more than you expect.",
+    advice_reversed:"Speed without direction is just spinning. What is the actual destination? Name it, then choose the path — not all of the paths."
+  },
+  {
+    num:"VIII", name:"Strength", symbol:"🦁", keywords:"Courage · Patience · Compassionate power",
+    upright:"Gentle but firm inner strength guides you. Compassion — for yourself and others — is more powerful than force.",
+    reversed:"Self-doubt or suppressed intensity may be at work. Where are you using force when tenderness would serve better?",
+    symbolism:"A woman calmly holds open the mouth of a lion, with no fear on her face — only quiet certainty. Above her head floats the same infinity symbol as the Magician's, but here earned through relationship rather than command. She wears a crown of flowers. This is not the strength of the warrior — it is the strength of one who has met their own wildness and befriended it. The lion is not tamed; he is understood.",
+    themes:["Inner strength","Courage","Compassion","Patience","Resilience","Self-mastery","Gentleness","Integration of shadow"],
+    in_reading:"Strength is the card of quiet power — the kind that doesn't need to announce itself. It often appears when you're facing something that requires endurance rather than force, or when the most courageous thing is to remain open rather than close down. Upright, it's a reassurance: you have more inner resource than you know. Reversed, it may signal self-doubt, repressed anger, or energy turned inward in unhealthy ways.",
+    advice_upright:"You don't need to be louder or harder to get through this. Your steadiness is the strongest thing you have — use it.",
+    advice_reversed:"The part of you you've been trying to suppress is not the enemy. What would happen if you turned toward it with curiosity instead of control?"
+  },
+  {
+    num:"IX", name:"The Hermit", symbol:"🏮", keywords:"Solitude · Introspection · Inner guidance",
+    upright:"The answers you need are found in stillness. A period of quiet reflection will light the path forward.",
+    reversed:"Too much isolation may be stalling you — or you're refusing guidance being genuinely offered.",
+    symbolism:"An old man stands alone at a mountain peak, holding a lantern containing a six-pointed star (the Seal of Solomon — wisdom). He leans on a staff and faces downward, as if illuminating the path for others who follow. He has climbed the mountain of experience; now he holds the lamp. He is not hidden from the world because he fears it — he has withdrawn in order to see it more clearly.",
+    themes:["Solitude","Wisdom","Introspection","Guidance","The inner teacher","Retreat","Patience","Soul-searching"],
+    in_reading:"The Hermit is the card of deliberate withdrawal — the choice to step back from external noise in order to access something deeper. It often appears during periods of questioning or transition. Upright, it's an invitation to seek your own counsel rather than asking everyone else what you should do. Reversed, it can indicate excessive isolation, loneliness mistaken for wisdom, or a reluctance to accept help.",
+    advice_upright:"The answer you've been looking for isn't in another conversation, another search, another opinion. Sit with the question alone today.",
+    advice_reversed:"Solitude is a tool, not a permanent state. If you've been in retreat for a long time, what are you avoiding by staying there?"
+  },
+  {
+    num:"X", name:"Wheel of Fortune", symbol:"☯️", keywords:"Cycles · Fate · Turning points",
+    upright:"The wheel turns in your favour. What feels uncertain is part of a larger cycle — change is working for you.",
+    reversed:"You may be resisting change that's natural and necessary. What would it feel like to stop pushing against the current?",
+    symbolism:"A great wheel floats in the clouds, covered in alchemical symbols and the letters TARO (or ROTA — wheel in Latin). Four winged creatures — a man, an eagle, a lion, a bull (the four fixed signs of the zodiac) — read from books at each corner. A sphinx sits atop the wheel; a serpent descends one side, Anubis ascends the other. The wheel turns; no one position is permanent. This is the card of fate, karma, and the unstoppable rhythm of change.",
+    themes:["Change","Cycles","Fate","Luck","Karma","Timing","Impermanence","Opportunity"],
+    in_reading:"The Wheel of Fortune is the great reminder that everything is in motion. What's down will come up; what's up will come down. Upright, it often signals a positive turn — luck, opportunity, or a moment where forces align in your favour. Reversed, it can warn of resisting a necessary change, bad luck, or cycles that need to be broken through conscious choice rather than endured.",
+    advice_upright:"Ride the current rather than exhausting yourself swimming against it. Something is turning your way — stay alert enough to meet it.",
+    advice_reversed:"The thing you keep fighting may not be an obstacle. It may be the change. What would it mean to let the wheel turn?"
+  },
+  {
+    num:"XI", name:"Justice", symbol:"⚖️", keywords:"Truth · Fairness · Cause and effect",
+    upright:"What is just will prevail. Act with integrity today — your choices are planting seeds whose fruit you will taste.",
+    reversed:"Dishonesty or unfairness clouds the situation. Look honestly at your own role before assigning blame elsewhere.",
+    symbolism:"Justice sits enthroned between two pillars, a sword in one hand (reason, clarity, decision) and scales in the other (balance, weighing, fairness). She wears a crown and red robes, and looks directly out at you. There is no blindfold here — this is not blind justice but clear-eyed, deliberate justice. The small square on her crown represents ordered thinking. She sees everything and weighs it accurately.",
+    themes:["Truth","Fairness","Law","Accountability","Cause and effect","Clarity","Ethics","Decisions"],
+    in_reading:"Justice is the card of honest reckoning — not punishment, but accurate accounting. It often appears around legal matters, important decisions, or moments that require taking clear-eyed stock of a situation. Upright, it promises that a fair outcome is coming, or calls you to act with integrity now. Reversed, it can point to dishonesty, evasion of responsibility, or a situation where bias is distorting the picture.",
+    advice_upright:"Before you decide, ask: what is actually true here, stripped of what I want to be true? Act from that.",
+    advice_reversed:"There's a version of events where you're not as blameless as you've been presenting — to yourself or to others. What does that version say?"
+  },
+  {
+    num:"XII", name:"The Hanged Man", symbol:"🔄", keywords:"Surrender · Suspension · New perspective",
+    upright:"Stop forcing a solution. The most powerful act right now is to pause — a new angle reveals what action cannot.",
+    reversed:"Unnecessary delay or stubborn refusal to let go keeps you stuck. What are you sacrificing that isn't serving anything?",
+    symbolism:"A young man hangs upside-down from a living T-cross (the World Tree), suspended by one ankle while the other forms a cross with his leg. His expression is serene, not anguished. A halo of light surrounds his head. He is not a victim — he has chosen this position. The cross suggests sacrifice; the living wood suggests this is a threshold, not an ending. He sees the world differently because he has chosen to see it differently.",
+    themes:["Surrender","Pause","Reversal","Sacrifice","New perspective","Letting go","Wisdom through waiting","Liminal space"],
+    in_reading:"The Hanged Man appears when the way forward requires giving something up — usually control, a fixed perspective, or the urge to act. It's often a card of sacred pause: the moment between one state and the next where wisdom arrives not through effort but through suspension. Upright, it invites surrender and a willingness to see things completely differently. Reversed, it can point to unnecessary martyrdom or the refusal to accept what needs to change.",
+    advice_upright:"The answer isn't coming through more effort. Hang there for a moment — let the blood rush to a different part of your thinking.",
+    advice_reversed:"Not all waiting is wisdom. If you've been suspended for a long time, ask whether you're pausing or hiding."
+  },
+  {
+    num:"XIII", name:"Death", symbol:"🌑", keywords:"Endings · Transformation · Release",
+    upright:"Something must end for something new to begin. Release what no longer serves — transformation is already underway.",
+    reversed:"Clinging to what's already gone blocks what's trying to arrive. Fear of endings is the only thing standing between you and renewal.",
+    symbolism:"A skeleton in black armour rides a white horse, carrying a black flag bearing a white rose — death adorned with life. Before him, figures from every station of life: a fallen king, a praying bishop, a young woman, an innocent child. The sun sets (and rises) between two towers in the background. He is not selective; he comes for all. But the white rose and the sun on the horizon speak of what persists: something survives the ending and moves toward the light.",
+    themes:["Endings","Transformation","Release","The inevitable","Clearing","Rebirth","Transition","Impermanence"],
+    in_reading:"Death almost never means literal death. It is the card of necessary endings — the closing of a chapter so a new one can open. It asks you to release what has genuinely run its course, even when it's painful. Upright, it is ultimately hopeful: something is clearing to make room. Reversed, it warns of clinging — to dead relationships, dead ideas, or old versions of yourself that have already outgrown their use.",
+    advice_upright:"Honour the ending. Don't rush past it toward the next thing — but don't drag it out either. What's done deserves acknowledgment, not resurrection.",
+    advice_reversed:"You know it's over. The only remaining question is how long you're willing to keep pretending it isn't."
+  },
+  {
+    num:"XIV", name:"Temperance", symbol:"🌊", keywords:"Balance · Patience · Integration",
+    upright:"Flow, moderation, and patience guide you now. Opposites can be blended into something richer than either alone.",
+    reversed:"Excess or imbalance is disrupting your peace. Something has tipped too far — slow down and find your centre.",
+    symbolism:"An angelic figure stands with one foot on land and one in water, pouring a liquid between two cups in an apparently impossible flow (upward, against gravity). Their robes are white; a solar triangle glows on their chest; irises bloom at the stream's edge. The path behind them leads to a solar crown on the horizon — the final goal, glimpsed through patience. This is alchemy: the slow, careful process of mixing elements until they become something new.",
+    themes:["Balance","Moderation","Integration","Patience","Alchemy","Flow","Healing","Long-term vision"],
+    in_reading:"Temperance is the card of the long game — of combining opposing forces slowly and carefully until something new and whole emerges. It often appears during periods of healing or gradual development. Upright, it calls for patience with the process, trust in the slow blend, and attention to extremes that need moderating. Reversed, it can point to imbalance, overindulgence, conflict between aspects of yourself, or a relationship that needs careful tending.",
+    advice_upright:"You're being asked to blend, not choose. The tension between two things in your life is not a problem to solve — it's an ingredient.",
+    advice_reversed:"What have you been doing 'too much' of lately — working, worrying, numbing, striving? What would the moderated version look like today?"
+  },
+  {
+    num:"XV", name:"The Devil", symbol:"🔗", keywords:"Shadow · Attachment · Illusion of bondage",
+    upright:"Examine what you're bound to. What habits or illusions feel like needs but are keeping you small?",
+    reversed:"The chains were never locked. You are freer than you believe — awareness is already the beginning of liberation.",
+    symbolism:"A horned, bat-winged devil squats on a half-cube (incomplete knowledge, materialism), flanked by a naked man and woman loosely chained to his plinth. The chains are large enough to slip off. The man has grown a tail of fire; the woman, grapes. They are transforming into the very thing they serve. The inverted pentagram above the Devil's head signals a turning away from spirit toward pure matter. Yet the chains are loose — they're there by choice.",
+    themes:["Shadow","Attachment","Bondage","Illusion","The unconscious","Materialism","Addiction","Self-awareness"],
+    in_reading:"The Devil is the card of the shadow — the parts of ourselves we don't examine, the bonds we don't notice or won't admit. It often appears around addictive patterns, unhealthy attachments, or situations where fear is disguised as desire (or desire is disguised as love). Upright, it calls for honest scrutiny: what are you chained to, and why? Reversed, it often signals a moment of awakening — the chains loosening, the illusion seen through.",
+    advice_upright:"Name the thing you keep returning to that you know isn't serving you. Not to condemn it — just to see it clearly. Clarity is already freedom.",
+    advice_reversed:"You have more choice here than you've been acting like you do. What's one small move toward the door?"
+  },
+  {
+    num:"XVI", name:"The Tower", symbol:"⚡", keywords:"Upheaval · Revelation · Sudden change",
+    upright:"What's falling apart was built on an unstable foundation. The disruption clears what needs to go — stay open.",
+    reversed:"You may be avoiding a necessary collapse. Prolonging the inevitable only delays the clearing that will ultimately free you.",
+    symbolism:"A tall tower is struck by lightning; its crown blasted off, two figures fall from its windows, flames lick its walls. The lightning bolt is divine force — sudden, impartial, accurate. The crown flying off represents false beliefs about power and security. The figures falling may be terrified, but they are falling toward the ground — toward reality, toward what's true. The Tower was never stable; we simply didn't know it yet.",
+    themes:["Sudden change","Revelation","Upheaval","Destruction of illusion","Crisis","Liberation","Chaos","Truth"],
+    in_reading:"The Tower is one of the most feared cards in the deck — and one of the most honest. It appears when something built on a false foundation is about to collapse, or already has. The disruption is real and painful. But the Tower's gift is clarity: what falls was not serving you, even if you didn't know it. Upright, the change is imminent or underway. Reversed, it can signal a collapse being resisted, delayed, or feared unnecessarily.",
+    advice_upright:"Don't waste energy trying to put the pieces back together the way they were. Something is clearing. Ask what it's making room for.",
+    advice_reversed:"The crack in the wall you keep plastering over is not cosmetic. What would happen if you finally let it show?"
+  },
+  {
+    num:"XVII", name:"The Star", symbol:"✨", keywords:"Hope · Renewal · Inspiration",
+    upright:"After the storm, the stars appear. Allow yourself to be replenished — hope here is earned, not naive.",
+    reversed:"Doubt dims your guiding light. The hope you're looking for isn't gone — it's being obscured by old stories.",
+    symbolism:"A naked woman kneels at a pool of water, one foot on the earth (grounded) and one in the water (intuitive). She pours water from two jugs — one into the pool, one onto the land — nourishing both the unconscious and the material world. Above her, one large star and seven smaller ones (the seven chakras, or the Pleiades). She is unguarded, unashamed, open. The star has appeared after the Tower's storm — this is what survives devastation.",
+    themes:["Hope","Renewal","Healing","Vulnerability","Inspiration","Peace","Guidance","Authenticity"],
+    in_reading:"The Star follows the Tower in the Major Arcana — and it offers the healing that follows collapse. It is the card of genuine hope, the kind earned through difficulty rather than borrowed from wishful thinking. Upright, it invites you to let yourself be restored: to receive, to open, to believe again. Reversed, it often points to cynicism, despair, or the refusal to let hope return after a period of pain.",
+    advice_upright:"Let yourself want something beautiful without immediately preparing for its failure. The hope itself is doing something.",
+    advice_reversed:"Hope is not the same as expectation. You can hold the possibility of good things without attaching to a specific outcome. Try that today."
+  },
+  {
+    num:"XVIII", name:"The Moon", symbol:"🌕", keywords:"Illusion · Intuition · The unconscious",
+    upright:"Reality is more layered than it appears. Your dreams and instincts carry real information — don't dismiss them.",
+    reversed:"Confusion is beginning to lift. As fears lose their grip, clarity returns — let it, gently.",
+    symbolism:"A full moon hangs between twin towers, casting reflected (not direct) light on the landscape below. A crayfish crawls from a pool — a creature from the deep unconscious, beginning its long journey. Two dogs (one domestic, one wild) howl at the moon — the civilised self and the instinctual self, both responding to the same uncertain light. The path winds between the towers into the unknown distance. Everything is real and not-real at once.",
+    themes:["Illusion","The unconscious","Dreams","Fear","Intuition","Deception","Mystery","Shadow"],
+    in_reading:"The Moon is the card of the not-quite-seen: the thing you sense but can't name, the situation that isn't quite what it presents itself as, the fear that looms larger than its source. It often appears when the unconscious is active — in dreams, in irrational feelings, in art. Upright, it invites you to pay attention to what you're sensing beneath the surface, without rushing to conclusions. Reversed, it often signals confusion clearing, or a deception coming to light.",
+    advice_upright:"What you're feeling that you can't explain probably means something. Sit with it rather than talking yourself out of it.",
+    advice_reversed:"The fog is thinning. Don't fill the clearing clarity with new stories — let it empty out first and see what's actually there."
+  },
+  {
+    num:"XIX", name:"The Sun", symbol:"☀️", keywords:"Joy · Vitality · Success",
+    upright:"Warmth, clarity, and success surround you. Let yourself be seen and be joyful — today carries real light.",
+    reversed:"A temporary cloud dims the brightness. Joy is still present; it's just quieter today. This is not the end of summer.",
+    symbolism:"A child rides a white horse beneath a radiant sun with a human face, holding a red banner. The child is unclothed — nothing hidden, nothing defended. Sunflowers bloom over a garden wall. The sun's rays alternate straight and wavy (active and passive, giving and receiving). This is the card of consciousness made joyful — awareness that has moved through darkness and emerged into direct light, with nothing left to hide.",
+    themes:["Joy","Clarity","Success","Vitality","Childhood","Freedom","Truth","Abundance"],
+    in_reading:"The Sun is one of the most unambiguously positive cards in the deck. It speaks of vitality, success, and a kind of joy that comes from genuinely seeing clearly rather than from pretending everything is fine. Upright, it's a signal that things are going well — or are about to. It invites you to be present for it, to shine rather than dim yourself. Reversed, it can suggest that the good is there but being obscured — by self-doubt, by low energy, or by a temporary shadow.",
+    advice_upright:"Whatever is going well right now: receive it fully. Let yourself be glad. Not every season needs to be complicated.",
+    advice_reversed:"You're closer to joy than you feel. What one small thing today — genuinely small — could you do just because it pleases you?"
+  },
+  {
+    num:"XX", name:"Judgement", symbol:"🔔", keywords:"Awakening · Reckoning · Soul's calling",
+    upright:"Something is calling you forward — toward a truer version of yourself. The invitation is real. Will you answer?",
+    reversed:"Fear of judgment — your own or others' — keeps you from rising. What verdict have you handed down on yourself?",
+    symbolism:"The Archangel Gabriel blows a trumpet from the clouds; below, figures rise from open coffins in a gesture of resurrection — arms outstretched, faces upturned. Mountains of ice rise in the background (the barriers of the past). A cross on the angel's banner: the balance of the horizontal (human) and vertical (divine). This is not the end — it is the moment of being called back to life, summoned to a fuller expression of who you actually are.",
+    themes:["Awakening","Calling","Reckoning","Forgiveness","Renewal","Purpose","Soul","Accountability"],
+    in_reading:"Judgement is the card of the great reckoning — not of punishment but of honest accounting and the invitation to rise. It often appears at turning points when something deep is asking to be heard, healed, or answered. Upright, it calls for self-reflection that leads to transformation: what needs to be acknowledged, forgiven, or finally committed to? Reversed, it can point to harsh self-judgment, a calling being ignored, or fear of being truly seen.",
+    advice_upright:"The call has come before. You've heard it. What's been stopping you from answering it this time?",
+    advice_reversed:"You are judging yourself more harshly than the evidence warrants. What sentence are you serving, and who gave it to you?"
+  },
+  {
+    num:"XXI", name:"The World", symbol:"🌍", keywords:"Completion · Integration · Wholeness",
+    upright:"A cycle completes. You have arrived somewhere real — honour it. And then: what wants to begin?",
+    reversed:"Something remains unfinished. A loose thread you're leaving keeps true completion just out of reach.",
+    symbolism:"A dancing figure — often androgynous, draped in a purple sash — moves within a laurel wreath, holding two wands (one in each hand, like the Magician, but now from a place of mastery). Around the wreath, the four fixed zodiac creatures reappear: bull, lion, eagle, man. The wreath is a world unto itself — complete, enclosed, whole. But the figure dances, suggesting that completion is not stasis: it is the fullness from which the next cycle begins.",
+    themes:["Completion","Wholeness","Integration","Mastery","Achievement","Arrival","Culmination","New cycle"],
+    in_reading:"The World is the final card of the Major Arcana — and it represents genuine completion, not the appearance of it. It appears when a significant cycle has reached its natural end, and something has been truly integrated. Upright, it invites you to honour what you've accomplished, claim it, and feel the wholeness of it before the next beginning. Reversed, it points to a cycle not yet closed — something unfinished that's preventing the full experience of arrival.",
+    advice_upright:"Before you reach for the next thing: stop. You've actually done something. Let yourself know it, fully, before you move on.",
+    advice_reversed:"The completion you're looking for requires one more honest step. What is the thing you're leaving undone — and what does finishing it require of you?"
+  }
+];
+
+let revealed = false;
+let isDark = false;
+
+// Detect system preference
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  isDark = true;
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('theme-icon').textContent = isDark ? '🌙' : '☀️';
+  document.getElementById('theme-label').textContent = isDark ? 'Dark' : 'Light';
+}
+
+function toggleTheme() {
+  isDark = !isDark;
+  applyTheme();
+}
+
+function getDateCard() {
+  const d = new Date();
+  const seed = d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+  const idx = seed % CARDS.length;
+  const rev = (seed % 7) < 2;
+  return { card: CARDS[idx], reversed: rev };
+}
+
+function populate(card, reversed) {
+  document.getElementById('card-arcana').textContent = 'Major Arcana · ' + card.num;
+  document.getElementById('card-symbol').textContent = card.symbol;
+  document.getElementById('card-title').textContent = card.name;
+  document.getElementById('card-keywords').textContent = card.keywords;
+  document.getElementById('card-meaning-front').textContent = reversed ? card.reversed : card.upright;
+
+  const pill = document.getElementById('reversed-pill');
+  pill.style.display = reversed ? 'block' : 'none';
+
+  // Lore panel
+  document.getElementById('lore-symbolism').textContent = card.symbolism;
+  const chipsEl = document.getElementById('lore-themes');
+  chipsEl.innerHTML = '';
+  card.themes.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'chip';
+    span.textContent = t;
+    chipsEl.appendChild(span);
+  });
+  document.getElementById('lore-in-reading').textContent = card.in_reading;
+
+  // Advice
+  document.getElementById('advice-text').textContent = reversed ? card.advice_reversed : card.advice_upright;
+
+  // Prompts
+  const prompts = reversed ? card.prompts_reversed : card.prompts_upright;
+  const ul = document.getElementById('prompt-list');
+  ul.innerHTML = '';
+  prompts.forEach((p, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="prompt-num">${i+1}.</span><span class="prompt-text">${p}</span>`;
+    ul.appendChild(li);
+  });
+}
+
+function showPanels() {
+  ['panel-lore','panel-advice','panel-prompts'].forEach((id, i) => {
+    setTimeout(() => document.getElementById(id).classList.add('visible'), 200 + i * 250);
+  });
+  document.getElementById('draw-btn').style.display = 'block';
+}
+
+function hidePanels() {
+  ['panel-lore','panel-advice','panel-prompts'].forEach(id => {
+    document.getElementById(id).classList.remove('visible');
+  });
+}
+
+function toggleFlip() {
+  const inner = document.getElementById('card-inner');
+  const btn = document.getElementById('flip-btn');
+  const label = document.getElementById('flip-label');
+
+  if (!revealed) {
+    revealed = true;
+    inner.classList.add('revealed');
+    btn.style.display = 'flex';
+    label.textContent = 'Hide card';
+    btn.classList.add('active');
+    showPanels();
+  } else {
+    const isShowing = inner.classList.contains('revealed');
+    if (isShowing) {
+      inner.classList.remove('revealed');
+      label.textContent = 'Reveal card';
+      btn.classList.remove('active');
+      hidePanels();
+    } else {
+      inner.classList.add('revealed');
+      label.textContent = 'Hide card';
+      btn.classList.add('active');
+      showPanels();
+    }
+  }
+}
+
+function drawRandom() {
+  revealed = false;
+  const inner = document.getElementById('card-inner');
+  inner.classList.remove('revealed');
+  document.getElementById('flip-btn').style.display = 'none';
+  document.getElementById('flip-btn').classList.remove('active');
+  hidePanels();
+  document.getElementById('draw-btn').style.display = 'none';
+  const idx = Math.floor(Math.random() * CARDS.length);
+  const rev = Math.random() < 0.25;
+  populate(CARDS[idx], rev);
+}
+
+// Keyboard support for card
+document.getElementById('card-scene').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFlip(); }
+});
+
+// Init
+applyTheme();
+const d = new Date();
+document.getElementById('date-line').textContent = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+const { card, reversed } = getDateCard();
+populate(card, reversed);
+</script>
+</body>
+</html>
