@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext y='82' font-size='66' x='50' text-anchor='middle'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext y='82' font-size='66' x='50' text-anchor='middle'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext x='50' y='50' font-size='60' text-anchor='middle' dominant-baseline='central'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext x='50' y='50' font-size='60' text-anchor='middle' dominant-baseline='central'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Tarot">
@@ -23,7 +23,7 @@
   --card-bg:#1e0f52;--card-front-text:#f0ebff;--card-front-sub:#c8b8f8;
   --card-border:#3d2d8a;--card-keyword:#b0a0e8;--card-divider:#4a3a9a;--card-meaning-color:#d8d0f8;
   --back-bg:#f5f0e8;--back-border:#a08040;--back-ornament:#7a5c20;--back-text:#4a3800;
-  --pill-bg:#ffe8d0;--pill-text:#6b2800;
+  --pill-bg:#ffe8d0;--pill-text:#6b2800;--upright-bg:#d8f0e0;--upright-text:#1a5c30;
   --draw-border:#5a3e00;--draw-text:#5a3e00;--draw-hover-bg:#f5e8c5;
   --tab-active-bg:#1e0f52;--tab-active-text:#f0ebff;--tab-bg:#e8e2f8;--tab-text:#1e0f52;
   --grid-card-bg:#1e0f52;--grid-card-text:#f0ebff;--grid-card-sub:#b0a0e8;--grid-card-border:#3d2d8a;
@@ -38,7 +38,7 @@
   --card-bg:#fffef8;--card-front-text:#1e0f52;--card-front-sub:#4a3800;
   --card-border:#c9a84c;--card-keyword:#6a4800;--card-divider:#a08040;--card-meaning-color:#2d1a6b;
   --back-bg:#1a0f38;--back-border:#7c5cbf;--back-ornament:#b39ddb;--back-text:#d4c8f8;
-  --pill-bg:#3a1800;--pill-text:#ffb870;
+  --pill-bg:#3a1800;--pill-text:#ffb870;--upright-bg:#0d3020;--upright-text:#70e0a0;
   --draw-border:#b0a0e0;--draw-text:#d0c4f8;--draw-hover-bg:#2a1f50;
   --tab-active-bg:#c8b0f8;--tab-active-text:#0d0a16;--tab-bg:#2a1f50;--tab-text:#d0c4f8;
   --grid-card-bg:#fffef8;--grid-card-text:#1e0f52;--grid-card-sub:#6a4800;--grid-card-border:#c9a84c;
@@ -68,6 +68,7 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
 .card-keywords{font-family:'Sora',sans-serif;font-size:0.56rem;font-weight:500;letter-spacing:.05em;color:var(--card-keyword);text-align:center;margin-bottom:.65rem;width:100%}
 .card-divider{width:40px;height:1.5px;background:var(--card-divider);margin:0 auto .65rem;border-radius:2px}
 .reversed-pill{font-family:'Sora',sans-serif;font-size:0.52rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:var(--pill-bg);color:var(--pill-text);padding:2px 10px;border-radius:20px;margin-bottom:.45rem;display:none}
+#upright-pill,#det-upright-pill{background:var(--upright-bg);color:var(--upright-text);}
 .card-meaning{font-family:'Fraunces',serif;font-size:0.78rem;font-style:italic;font-weight:300;color:var(--card-meaning-color);text-align:center;line-height:1.65;padding:0 .2rem;width:100%}
 .card-controls{display:flex;gap:10px;margin:1.1rem 0 .25rem;justify-content:center;align-items:center;min-height:36px;flex-wrap:wrap}
 .ctrl-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:6px 16px;font-family:'Sora',sans-serif;font-size:0.7rem;font-weight:500;cursor:pointer;transition:background .2s}
@@ -150,6 +151,7 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
         <div class="card-title" id="card-title"></div>
         <div class="card-keywords" id="card-keywords"></div>
         <div class="card-divider"></div>
+        <div class="reversed-pill" id="upright-pill">Upright</div>
         <div class="reversed-pill" id="reversed-pill">Reversed</div>
         <div class="card-meaning" id="card-meaning-front"></div>
       </div>
@@ -190,6 +192,7 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
       <div class="card-title" id="det-title"></div>
       <div class="card-keywords" id="det-keywords"></div>
       <div class="card-divider"></div>
+      <div class="reversed-pill" id="det-upright-pill">Upright</div>
       <div class="reversed-pill" id="det-pill">Reversed</div>
       <div class="card-meaning" id="det-meaning"></div>
     </div>
@@ -325,6 +328,7 @@ function updateDailyMeaning(){
   const rev=viewOrientation;
   document.getElementById('card-meaning-front').textContent=rev?currentCard.reversed:currentCard.upright;
   document.getElementById('reversed-pill').style.display=rev?'block':'none';
+  document.getElementById('upright-pill').style.display=rev?'none':'block';
   document.getElementById('btn-orientation').textContent=rev?'↑ Show Upright':'↓ Show Reversed';
   populateCorrPanel(currentCard);
   document.getElementById('lore-symbolism').textContent=currentCard.symbolism;
@@ -387,6 +391,7 @@ function renderDetailCard(){
   document.getElementById('det-keywords').textContent=card.keywords;
   document.getElementById('det-meaning').textContent=rev?card.reversed:card.upright;
   document.getElementById('det-pill').style.display=rev?'block':'none';
+  document.getElementById('det-upright-pill').style.display=rev?'none':'block';
   const numNote=card.numNote||'';const num=card.num||'';
   document.getElementById('detail-panels').innerHTML=`
     <div class="panel visible"><div class="panel-label">Correspondences</div><div class="corr-grid"><div class="corr-item"><div class="corr-label">Element</div><div class="corr-value">${card.element||'—'}</div></div><div class="corr-item"><div class="corr-label">Astrology</div><div class="corr-value">${card.astro||'—'}</div></div>${numNote?`<div class="corr-item corr-full"><div class="corr-label">Numerology · ${num}</div><div class="num-note">${numNote}</div></div>`:''}</div></div>
