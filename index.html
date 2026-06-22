@@ -1,121 +1,245 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext x='50' y='50' font-size='60' text-anchor='middle' dominant-baseline='central'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext x='50' y='50' font-size='60' text-anchor='middle' dominant-baseline='central'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Tarot">
-<meta name="theme-color" content="#1e0f52">
-<link rel="manifest" href="/manifest.json">
 <title>Tarot a Day</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext x='50' y='50' font-size='60' text-anchor='middle' dominant-baseline='central'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231e0f52'/%3E%3Ctext x='50' y='50' font-size='60' text-anchor='middle' dominant-baseline='central'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tarot">
+<meta name="theme-color" content="#f0ece3">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-[data-theme="light"]{
+
+:root{
   --bg:#f0ece3;--bg2:#e4dfd5;--surface:#faf8f4;--border:#bdb5a6;
   --text:#1c1812;--text2:#2e2a22;--text3:#4a4438;
-  --label:#5a3e00;--gold:#5a3e00;
+  --label:#5a3e00;--gold:#5a3e00;--gold-light:#f5e8c5;
   --chip-text:#1e0f52;--chip-bg:#ddd6f5;--chip-border:#bbaee8;
-  --card-bg:#1e0f52;--card-front-text:#f0ebff;--card-front-sub:#c8b8f8;
-  --card-border:#3d2d8a;--card-keyword:#b0a0e8;--card-divider:#4a3a9a;--card-meaning-color:#d8d0f8;
-  --back-bg:#f5f0e8;--back-border:#a08040;--back-ornament:#7a5c20;--back-text:#4a3800;
-  --pill-bg:#ffe8d0;--pill-text:#6b2800;--upright-bg:#d8f0e0;--upright-text:#1a5c30;
+  --card-bg:#fffef8;--card-front-text:#1e0f52;--card-front-sub:#5a3e00;
+  --card-border:#b09050;--card-keyword:#7a5c10;--card-divider:#c9a84c;--card-meaning-color:#2d1a6b;
+  --back-bg:#1e0f52;--back-border:#4a3a9a;--back-ornament:#b39ddb;--back-text:#d4c8f8;
+  --pill-up-bg:#e8f5ec;--pill-up-text:#1a5c30;
+  --pill-rev-bg:#fff0e8;--pill-rev-text:#6b2800;
   --draw-border:#5a3e00;--draw-text:#5a3e00;--draw-hover-bg:#f5e8c5;
   --tab-active-bg:#1e0f52;--tab-active-text:#f0ebff;--tab-bg:#e8e2f8;--tab-text:#1e0f52;
-  --grid-card-bg:#1e0f52;--grid-card-text:#f0ebff;--grid-card-sub:#b0a0e8;--grid-card-border:#3d2d8a;
+  --grid-card-bg:#fffef8;--grid-card-text:#1e0f52;--grid-card-sub:#7a5c10;--grid-card-border:#b09050;
   --corr-bg:#f5f0e8;--corr-border:#bdb5a6;--corr-text:#2e2a22;--corr-label:#5a3e00;
-  --overlay-bg:#f0ece3;
+  --tooltip-bg:#1e0f52;--tooltip-text:#f0ebff;
+  --shuffle-bg:#1e0f52;--shuffle-text:#f0ebff;--shuffle-sub:#b0a0e0;
+  --claude-bg:#1e0f52;--claude-text:#f0ebff;
 }
-[data-theme="dark"]{
-  --bg:#0d0a16;--bg2:#160f28;--surface:#1a1230;--border:#3a2d60;
-  --text:#f2eeff;--text2:#d8d0f0;--text3:#b0a4d8;
-  --label:#e8d080;--gold:#e8d080;
-  --chip-text:#e0d4ff;--chip-bg:#2a1f50;--chip-border:#5040a0;
-  --card-bg:#fffef8;--card-front-text:#1e0f52;--card-front-sub:#4a3800;
-  --card-border:#c9a84c;--card-keyword:#6a4800;--card-divider:#a08040;--card-meaning-color:#2d1a6b;
-  --back-bg:#1a0f38;--back-border:#7c5cbf;--back-ornament:#b39ddb;--back-text:#d4c8f8;
-  --pill-bg:#3a1800;--pill-text:#ffb870;--upright-bg:#0d3020;--upright-text:#70e0a0;
-  --draw-border:#b0a0e0;--draw-text:#d0c4f8;--draw-hover-bg:#2a1f50;
-  --tab-active-bg:#c8b0f8;--tab-active-text:#0d0a16;--tab-bg:#2a1f50;--tab-text:#d0c4f8;
-  --grid-card-bg:#fffef8;--grid-card-text:#1e0f52;--grid-card-sub:#6a4800;--grid-card-border:#c9a84c;
-  --corr-bg:#1e1535;--corr-border:#3a2d60;--corr-text:#d8d0f0;--corr-label:#e8d080;
-  --overlay-bg:#0d0a16;
-}
-body{background:var(--bg);color:var(--text);font-family:'Sora',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1.25rem 5rem;transition:background .3s,color .3s}
+
+body{background:var(--bg);color:var(--text);font-family:'Sora',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1.25rem 5rem;}
+
+/* ── Header ── */
 header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem}
 .site-title{font-family:'Fraunces',serif;font-size:clamp(1.5rem,5vw,2rem);font-weight:600;font-style:italic;color:var(--text);line-height:1.1}
 .date-line{font-size:0.78rem;color:var(--text3);margin-top:.3rem}
-.icon-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:24px;padding:6px 14px;font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .2s;white-space:nowrap;margin-top:4px}
-.icon-btn:hover{background:var(--bg2)}
+
+/* ── Tabs ── */
 .tabs{width:100%;max-width:560px;display:flex;gap:8px;margin-bottom:2rem}
-.tab{flex:1;padding:9px 0;font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;background:var(--tab-bg);color:var(--tab-text);transition:background .2s,color .2s}
+.tab{flex:1;padding:9px 0;font-family:'Sora',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;background:var(--tab-bg);color:var(--tab-text);transition:background .2s,color .2s}
 .tab.active{background:var(--tab-active-bg);color:var(--tab-active-text);border-color:transparent}
-#view-daily{width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center}
-.card-scene{perspective:1200px;width:220px;cursor:pointer;margin:0 auto}
-.card-inner{width:220px;height:370px;position:relative;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.4,0,.2,1);border-radius:16px}
+
+/* ── Card scene ── */
+.card-scene{perspective:1200px;width:210px;cursor:pointer;margin:0 auto}
+.card-inner{width:210px;height:355px;position:relative;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.4,0,.2,1);border-radius:16px}
 .card-inner.revealed{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .face-back{background:var(--back-bg);border:2px solid var(--back-border);padding:1.5rem}
-.back-tap{font-family:'Sora',sans-serif;font-size:0.62rem;font-weight:500;letter-spacing:.18em;color:var(--back-text);margin-top:1.1rem;text-transform:uppercase}
-.face-front{background:var(--card-bg);border:2px solid var(--card-border);transform:rotateY(180deg);padding:1.75rem 1.1rem 1.25rem;flex-direction:column;align-items:center;justify-content:flex-start}
-.card-arcana{font-family:'Sora',sans-serif;font-size:0.52rem;font-weight:600;letter-spacing:.2em;color:var(--card-front-sub);text-transform:uppercase;margin-bottom:.5rem;text-align:center;width:100%}
-.card-symbol{font-size:2.8rem;margin:.2rem 0 .45rem;line-height:1}
-.card-title{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--card-front-text);text-align:center;margin-bottom:.3rem;line-height:1.2;width:100%}
-.card-keywords{font-family:'Sora',sans-serif;font-size:0.56rem;font-weight:500;letter-spacing:.05em;color:var(--card-keyword);text-align:center;margin-bottom:.65rem;width:100%}
-.card-divider{width:40px;height:1.5px;background:var(--card-divider);margin:0 auto .65rem;border-radius:2px}
-.reversed-pill{font-family:'Sora',sans-serif;font-size:0.52rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;background:var(--pill-bg);color:var(--pill-text);padding:2px 10px;border-radius:20px;margin-bottom:.45rem;display:none}
-#upright-pill,#det-upright-pill{background:var(--upright-bg);color:var(--upright-text);}
-.card-meaning{font-family:'Fraunces',serif;font-size:0.78rem;font-style:italic;font-weight:300;color:var(--card-meaning-color);text-align:center;line-height:1.65;padding:0 .2rem;width:100%}
-.card-controls{display:flex;gap:10px;margin:1.1rem 0 .25rem;justify-content:center;align-items:center;min-height:36px;flex-wrap:wrap}
-.ctrl-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:6px 16px;font-family:'Sora',sans-serif;font-size:0.7rem;font-weight:500;cursor:pointer;transition:background .2s}
+.back-tap{font-family:'Sora',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:.18em;color:var(--back-text);margin-top:1rem;text-transform:uppercase}
+.face-front{background:var(--card-bg);border:2px solid var(--card-border);transform:rotateY(180deg);padding:1.6rem 1rem 1.2rem;flex-direction:column;align-items:center;justify-content:flex-start}
+.card-arcana{font-family:'Sora',sans-serif;font-size:0.5rem;font-weight:600;letter-spacing:.2em;color:var(--card-front-sub);text-transform:uppercase;margin-bottom:.45rem;text-align:center;width:100%}
+.card-symbol{font-size:2.6rem;margin:.15rem 0 .4rem;line-height:1}
+.card-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;color:var(--card-front-text);text-align:center;margin-bottom:.25rem;line-height:1.2;width:100%}
+.card-keywords{font-family:'Sora',sans-serif;font-size:0.54rem;font-weight:500;letter-spacing:.05em;color:var(--card-keyword);text-align:center;margin-bottom:.6rem;width:100%}
+.card-divider{width:38px;height:1.5px;background:var(--card-divider);margin:0 auto .6rem;border-radius:2px}
+.orientation-pill{font-family:'Sora',sans-serif;font-size:0.5rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:2px 10px;border-radius:20px;margin-bottom:.4rem;display:none}
+.orientation-pill.upright{background:var(--pill-up-bg);color:var(--pill-up-text);}
+.orientation-pill.reversed{background:var(--pill-rev-bg);color:var(--pill-rev-text);}
+.card-meaning{font-family:'Fraunces',serif;font-size:0.76rem;font-style:italic;font-weight:300;color:var(--card-meaning-color);text-align:center;line-height:1.65;padding:0 .2rem;width:100%}
+
+/* ── Card controls ── */
+.card-controls{display:flex;gap:8px;margin:1rem 0 .25rem;justify-content:center;align-items:center;min-height:34px;flex-wrap:wrap}
+.ctrl-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:5px 14px;font-family:'Sora',sans-serif;font-size:0.68rem;font-weight:500;cursor:pointer;transition:background .2s}
 .ctrl-btn:hover{background:var(--bg2)}
 .ctrl-btn.hidden-ctrl{display:none}
+
+/* ── Panels ── */
 .panels{width:100%;max-width:560px;display:flex;flex-direction:column;gap:1.1rem;margin-top:.4rem}
-.panel{border:1.5px solid var(--border);border-radius:14px;padding:1.4rem 1.6rem;background:var(--surface);opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease,background .3s,border-color .3s;pointer-events:none}
+.panel{border:1.5px solid var(--border);border-radius:14px;padding:1.4rem 1.6rem;background:var(--surface);opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease;pointer-events:none}
 .panel.visible{opacity:1;transform:translateY(0);pointer-events:all}
 .panel-label{font-family:'Sora',sans-serif;font-size:0.58rem;font-weight:600;letter-spacing:.2em;color:var(--label);text-transform:uppercase;margin-bottom:.9rem}
+
+/* ── Correspondences ── */
 .corr-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
-.corr-item{background:var(--corr-bg);border:1px solid var(--corr-border);border-radius:10px;padding:.7rem .9rem}
-.corr-label{font-family:'Sora',sans-serif;font-size:0.55rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--corr-label);margin-bottom:.2rem}
+.corr-item{background:var(--corr-bg);border:1px solid var(--corr-border);border-radius:10px;padding:.7rem .9rem;position:relative}
+.corr-label-row{display:flex;align-items:center;gap:5px;margin-bottom:.2rem}
+.corr-label{font-family:'Sora',sans-serif;font-size:0.54rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--corr-label)}
 .corr-value{font-family:'Fraunces',serif;font-size:0.92rem;font-weight:500;color:var(--corr-text)}
 .corr-full{grid-column:1/-1}
-.num-note{font-family:'Sora',sans-serif;font-size:0.85rem;line-height:1.75;color:var(--corr-text)}
+.num-label-row{display:flex;align-items:baseline;gap:6px;margin-bottom:.35rem}
+.num-number{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:600;color:var(--label);line-height:1}
+.num-title{font-family:'Sora',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--corr-label)}
+.num-universal{font-family:'Sora',sans-serif;font-size:0.82rem;font-weight:500;color:var(--corr-text);margin-bottom:.35rem}
+.num-note{font-family:'Sora',sans-serif;font-size:0.82rem;line-height:1.75;color:var(--text3)}
+
+/* tooltip */
+.tooltip-wrap{position:relative;display:inline-flex;align-items:center}
+.tooltip-icon{width:14px;height:14px;border-radius:50%;background:var(--chip-bg);color:var(--chip-text);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--chip-border);flex-shrink:0;font-family:'Sora',sans-serif}
+.tooltip-box{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--tooltip-bg);color:var(--tooltip-text);font-family:'Sora',sans-serif;font-size:0.72rem;line-height:1.55;padding:.55rem .75rem;border-radius:8px;width:200px;z-index:50;pointer-events:none}
+.tooltip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--tooltip-bg)}
+.tooltip-wrap:hover .tooltip-box,.tooltip-wrap:focus-within .tooltip-box{display:block}
+
+/* ── Lore ── */
 .lore-section{margin-bottom:1rem}
 .lore-section:last-child{margin-bottom:0}
 .lore-heading{font-family:'Sora',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:.4rem}
 .lore-text{font-family:'Sora',sans-serif;font-size:0.88rem;line-height:1.8;color:var(--text2)}
 .theme-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:.3rem}
 .chip{font-family:'Sora',sans-serif;font-size:0.68rem;font-weight:500;background:var(--chip-bg);color:var(--chip-text);border:1px solid var(--chip-border);padding:3px 11px;border-radius:20px}
+
+/* advice */
 .advice-wrap{border-left:3px solid var(--gold);padding-left:1rem}
-.advice-text{font-family:'Fraunces',serif;font-size:1.02rem;font-weight:300;font-style:italic;line-height:1.8;color:var(--text)}
+.advice-text{font-family:'Fraunces',serif;font-size:1rem;font-weight:300;font-style:italic;line-height:1.8;color:var(--text)}
+
+/* prompts */
 .prompt-list{list-style:none;display:flex;flex-direction:column;gap:.95rem}
 .prompt-list li{display:flex;gap:.8rem;align-items:flex-start}
 .prompt-num{font-family:'Fraunces',serif;font-size:.95rem;font-weight:500;color:var(--label);min-width:1.2rem;flex-shrink:0;padding-top:1px}
 .prompt-text{font-family:'Sora',sans-serif;font-size:0.86rem;line-height:1.8;color:var(--text2)}
+
+/* ── Browse ── */
 #view-browse{width:100%;max-width:560px;display:none;flex-direction:column}
 .suit-section{margin-bottom:2rem}
 .suit-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;font-style:italic;color:var(--text);margin-bottom:.7rem;padding-bottom:.45rem;border-bottom:1px solid var(--border)}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:.55rem}
-.grid-card{background:var(--grid-card-bg);border:1.5px solid var(--grid-card-border);border-radius:10px;padding:.65rem .45rem;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s}
-.grid-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
-.grid-card-symbol{font-size:1.5rem;margin-bottom:.25rem}
-.grid-card-name{font-family:'Fraunces',serif;font-size:0.68rem;font-weight:500;color:var(--grid-card-text);line-height:1.2;margin-bottom:.15rem}
-.grid-card-sub{font-family:'Sora',sans-serif;font-size:0.55rem;color:var(--grid-card-sub)}
-#detail-overlay{display:none;position:fixed;inset:0;background:var(--overlay-bg);z-index:100;overflow-y:auto;padding:1.5rem 1.25rem 4rem;transition:background .3s}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.5rem}
+.grid-card{background:var(--grid-card-bg);border:1.5px solid var(--grid-card-border);border-radius:10px;padding:.6rem .4rem;cursor:pointer;text-align:center;transition:transform .15s,box-shadow .15s}
+.grid-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.grid-card-symbol{font-size:1.4rem;margin-bottom:.2rem}
+.grid-card-name{font-family:'Fraunces',serif;font-size:0.65rem;font-weight:500;color:var(--grid-card-text);line-height:1.2;margin-bottom:.1rem}
+.grid-card-sub{font-family:'Sora',sans-serif;font-size:0.52rem;color:var(--grid-card-sub)}
+
+/* ── Detail overlay ── */
+#detail-overlay{display:none;position:fixed;inset:0;background:var(--bg);z-index:100;overflow-y:auto;padding:1.5rem 1.25rem 4rem}
 .detail-inner{max-width:560px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
-.back-btn{align-self:flex-start;margin-bottom:1.5rem;background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:7px 16px;font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px}
+.back-btn{align-self:flex-start;margin-bottom:1.5rem;background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:7px 16px;font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer}
 .back-btn:hover{background:var(--bg2)}
-.detail-card{background:var(--card-bg);border:2px solid var(--card-border);border-radius:16px;padding:1.75rem 1.25rem;width:100%;max-width:280px;text-align:center;margin-bottom:1.5rem;display:flex;flex-direction:column;align-items:center}
-.detail-toggle-row{display:flex;gap:8px;margin-bottom:1.5rem;width:100%;max-width:280px}
-.orientation-btn{flex:1;padding:8px 0;font-family:'Sora',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:.05em;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;background:var(--tab-bg);color:var(--tab-text);transition:background .2s,color .2s}
+.detail-card{background:var(--card-bg);border:2px solid var(--card-border);border-radius:16px;padding:1.75rem 1.25rem;width:100%;max-width:260px;text-align:center;margin-bottom:1.4rem;display:flex;flex-direction:column;align-items:center}
+.detail-toggle-row{display:flex;gap:8px;margin-bottom:1.4rem;width:100%;max-width:260px}
+.orientation-btn{flex:1;padding:8px 0;font-family:'Sora',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:.05em;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;background:var(--tab-bg);color:var(--tab-text);transition:background .2s,color .2s}
 .orientation-btn.active{background:var(--tab-active-bg);color:var(--tab-active-text);border-color:transparent}
 .detail-panels{width:100%;display:flex;flex-direction:column;gap:1rem}
 .detail-panels .panel{opacity:1;transform:none;pointer-events:all}
-@media(prefers-reduced-motion:reduce){.card-inner,.panel{transition:none}}
+
+/* ── READINGS ── */
+#view-readings{width:100%;max-width:560px;display:none;flex-direction:column;align-items:center}
+
+/* spread picker */
+.spread-picker{width:100%;display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem}
+.spread-option{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;cursor:pointer;text-align:left;transition:border-color .2s,background .2s;width:100%}
+.spread-option:hover,.spread-option.selected{border-color:var(--tab-active-bg);background:var(--chip-bg)}
+.spread-name{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;color:var(--text);margin-bottom:.2rem}
+.spread-desc{font-family:'Sora',sans-serif;font-size:0.78rem;color:var(--text3);line-height:1.5}
+.spread-count{font-family:'Sora',sans-serif;font-size:0.62rem;font-weight:600;color:var(--label);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem}
+
+.begin-btn{background:var(--tab-active-bg);color:var(--tab-active-text);border:none;border-radius:8px;padding:13px 40px;font-family:'Sora',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;opacity:.4;pointer-events:none}
+.begin-btn.ready{opacity:1;pointer-events:all}
+
+/* shuffle screen */
+#shuffle-screen{display:none;width:100%;flex-direction:column;align-items:center;padding:1rem 0 2rem}
+.shuffle-cards{display:flex;justify-content:center;align-items:center;height:160px;margin-bottom:2rem;position:relative}
+.shuffle-card{width:70px;height:110px;border-radius:8px;background:var(--back-bg);border:1.5px solid var(--back-border);position:absolute;transition:transform .6s ease}
+.shuffle-card:nth-child(1){transform:rotate(-8deg) translateX(-30px)}
+.shuffle-card:nth-child(2){transform:rotate(0deg)}
+.shuffle-card:nth-child(3){transform:rotate(8deg) translateX(30px)}
+.shuffle-card svg{opacity:.5}
+@keyframes shuffleAnim{
+  0%{transform:rotate(-8deg) translateX(-30px)}
+  25%{transform:rotate(4deg) translateX(20px)}
+  50%{transform:rotate(-4deg) translateX(-20px)}
+  75%{transform:rotate(8deg) translateX(30px)}
+  100%{transform:rotate(-8deg) translateX(-30px)}
+}
+@keyframes shuffleAnim2{
+  0%{transform:rotate(0deg)}
+  33%{transform:rotate(-6deg) translateX(-15px)}
+  66%{transform:rotate(6deg) translateX(15px)}
+  100%{transform:rotate(0deg)}
+}
+@keyframes shuffleAnim3{
+  0%{transform:rotate(8deg) translateX(30px)}
+  25%{transform:rotate(-4deg) translateX(-20px)}
+  50%{transform:rotate(6deg) translateX(25px)}
+  75%{transform:rotate(-8deg) translateX(-30px)}
+  100%{transform:rotate(8deg) translateX(30px)}
+}
+.shuffle-card:nth-child(1).animating{animation:shuffleAnim 1.2s ease-in-out infinite}
+.shuffle-card:nth-child(2).animating{animation:shuffleAnim2 1s ease-in-out infinite}
+.shuffle-card:nth-child(3).animating{animation:shuffleAnim3 1.4s ease-in-out infinite}
+.shuffle-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;font-style:italic;color:var(--text);margin-bottom:.5rem}
+.shuffle-prompt{font-family:'Sora',sans-serif;font-size:0.85rem;color:var(--text3);text-align:center;min-height:1.4em;transition:opacity .4s;margin-bottom:2rem;max-width:320px}
+.shuffle-tap-btn{background:var(--tab-active-bg);color:var(--tab-active-text);border:none;border-radius:8px;padding:13px 40px;font-family:'Sora',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+
+/* reading layout */
+#reading-result{display:none;width:100%;flex-direction:column;align-items:center}
+.spread-title-display{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;font-style:italic;color:var(--text);margin-bottom:1.5rem;text-align:center}
+
+/* card slots */
+.spread-cards{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:1.5rem}
+.spread-slot{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+.slot-label{font-family:'Sora',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--label);text-align:center;max-width:90px}
+.spread-mini-card{width:88px;height:145px;border-radius:10px;background:var(--card-bg);border:1.5px solid var(--card-border);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:.7rem .4rem .5rem;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative}
+.spread-mini-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.spread-mini-card.selected-card{border-color:var(--tab-active-bg);box-shadow:0 0 0 2px var(--tab-active-bg)}
+.spread-mini-card.reversed-card{transform:rotate(180deg)}
+.spread-mini-card.reversed-card:hover{transform:rotate(180deg) translateY(3px)}
+.mini-symbol{font-size:1.6rem;margin-bottom:.25rem}
+.mini-name{font-family:'Fraunces',serif;font-size:0.58rem;font-weight:600;color:var(--card-front-text);text-align:center;line-height:1.2}
+.mini-rev{font-family:'Sora',sans-serif;font-size:0.45rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pill-rev-text);background:var(--pill-rev-bg);padding:1px 5px;border-radius:8px;margin-top:.2rem}
+
+/* celtic cross special layout */
+.celtic-grid{display:grid;grid-template-areas:".. top .. .. sig1" "left center right .. sig2" ".. cross .. .. sig3" ".. bottom .. .. sig4";grid-template-columns:90px 90px 90px 16px 90px;grid-template-rows:auto;gap:.5rem 0;justify-content:center}
+.celtic-slot{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.cs-top{grid-area:top}.cs-left{grid-area:left}.cs-center{grid-area:center}.cs-cross{grid-area:cross;position:relative}.cs-right{grid-area:right}.cs-bottom{grid-area:bottom}
+.cs-sig1{grid-area:sig1}.cs-sig2{grid-area:sig2}.cs-sig3{grid-area:sig3}.cs-sig4{grid-area:sig4}
+.cross-stack{position:relative;width:88px;height:145px}
+.cross-main{position:absolute;inset:0}
+.cross-overlay{position:absolute;inset:0;transform:rotate(90deg);opacity:.85}
+
+/* selected card detail */
+#selected-card-detail{width:100%;max-width:560px;display:none;flex-direction:column;gap:1rem;margin-top:.5rem}
+.selected-card-header{display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;background:var(--surface);border:1.5px solid var(--border);border-radius:12px}
+.selected-card-symbol{font-size:2.2rem}
+.selected-card-info{flex:1}
+.selected-position{font-family:'Sora',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--label);margin-bottom:.2rem}
+.selected-name{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;color:var(--text)}
+
+/* claude interpretation */
+.claude-panel{border:1.5px solid var(--tab-active-bg);border-radius:14px;padding:1.4rem 1.6rem;background:var(--surface);margin-top:.5rem}
+.claude-panel-label{font-family:'Sora',sans-serif;font-size:0.58rem;font-weight:600;letter-spacing:.2em;color:var(--tab-active-bg);text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:8px}
+.claude-label-star{font-size:.9rem}
+.interpret-btn{background:var(--tab-active-bg);color:var(--tab-active-text);border:none;border-radius:8px;padding:11px 28px;font-family:'Sora',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:opacity .2s;display:flex;align-items:center;gap:8px}
+.interpret-btn:hover{opacity:.88}
+.interpret-btn:disabled{opacity:.5;cursor:default}
+.claude-response{font-family:'Sora',sans-serif;font-size:0.88rem;line-height:1.85;color:var(--text2);white-space:pre-wrap}
+.claude-thinking{font-family:'Sora',sans-serif;font-size:0.82rem;color:var(--text3);font-style:italic}
+
+.restart-btn{margin:1.5rem auto 0;display:block;background:transparent;border:1.5px solid var(--draw-border);color:var(--draw-text);font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:10px 28px;border-radius:6px;cursor:pointer;transition:background .2s}
+.restart-btn:hover{background:var(--draw-hover-bg)}
+
+/* daily view */
+#view-daily{width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center}
+.draw-btn{margin:1.5rem auto 0;display:none;background:transparent;border:1.5px solid var(--draw-border);color:var(--draw-text);font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:10px 28px;border-radius:6px;cursor:pointer;transition:background .2s}
+.draw-btn:hover{background:var(--draw-hover-bg)}
+
+@media(prefers-reduced-motion:reduce){.card-inner,.panel,.shuffle-card{transition:none;animation:none}}
 </style>
 </head>
 <body>
@@ -124,17 +248,20 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
     <div class="site-title">Tarot a Day</div>
     <div class="date-line" id="date-line"></div>
   </div>
-  <button class="icon-btn" onclick="toggleTheme()"><span id="theme-icon">☀️</span><span id="theme-label">Light</span></button>
 </header>
+
 <div class="tabs">
-  <button class="tab active" id="tab-daily" onclick="showTab('daily')">Today's Card</button>
-  <button class="tab" id="tab-browse" onclick="showTab('browse')">All 78 Cards</button>
+  <button class="tab active" id="tab-daily"    onclick="showTab('daily')">Today</button>
+  <button class="tab"        id="tab-readings" onclick="showTab('readings')">Readings</button>
+  <button class="tab"        id="tab-browse"   onclick="showTab('browse')">All Cards</button>
 </div>
+
+<!-- ══════════════ DAILY VIEW ══════════════ -->
 <div id="view-daily">
   <div class="card-scene" id="card-scene" onclick="toggleFlip()" role="button" tabindex="0" aria-label="Tarot card — tap to flip">
     <div class="card-inner" id="card-inner">
       <div class="face face-back">
-        <svg width="90" height="90" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+        <svg width="88" height="88" viewBox="0 0 96 96" fill="none" aria-hidden="true">
           <circle cx="48" cy="48" r="38" stroke="var(--back-ornament)" stroke-width="1"/>
           <circle cx="48" cy="48" r="24" stroke="var(--back-ornament)" stroke-width=".6"/>
           <line x1="48" y1="10" x2="48" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/>
@@ -146,20 +273,20 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
         <div class="back-tap">Tap to reveal</div>
       </div>
       <div class="face face-front">
-        <div class="card-arcana" id="card-arcana"></div>
-        <div class="card-symbol" id="card-symbol"></div>
-        <div class="card-title" id="card-title"></div>
+        <div class="card-arcana"  id="card-arcana"></div>
+        <div class="card-symbol"  id="card-symbol"></div>
+        <div class="card-title"   id="card-title"></div>
         <div class="card-keywords" id="card-keywords"></div>
         <div class="card-divider"></div>
-        <div class="reversed-pill" id="upright-pill">Upright</div>
-        <div class="reversed-pill" id="reversed-pill">Reversed</div>
+        <div class="orientation-pill upright"  id="upright-pill">Upright</div>
+        <div class="orientation-pill reversed" id="reversed-pill">Reversed</div>
         <div class="card-meaning" id="card-meaning-front"></div>
       </div>
     </div>
   </div>
   <div class="card-controls">
     <button class="ctrl-btn hidden-ctrl" id="btn-orientation" onclick="toggleOrientation()">↓ Show Reversed</button>
-    <button class="ctrl-btn hidden-ctrl" id="btn-draw" onclick="drawRandom()">✦ Draw Another</button>
+    <button class="ctrl-btn hidden-ctrl" id="btn-draw"        onclick="drawRandom()">✦ Draw Another</button>
   </div>
   <div class="panels" id="panels">
     <div class="panel" id="panel-corr">
@@ -182,29 +309,125 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
     </div>
   </div>
 </div>
+
+<!-- ══════════════ READINGS VIEW ══════════════ -->
+<div id="view-readings">
+
+  <!-- Spread picker -->
+  <div id="spread-picker-section" style="width:100%">
+    <div style="font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;font-style:italic;color:var(--text);margin-bottom:1.1rem;text-align:center">Choose a spread</div>
+    <div class="spread-picker">
+      <button class="spread-option" onclick="selectSpread('ppf')">
+        <div class="spread-count">3 Cards</div>
+        <div class="spread-name">Past · Present · Future</div>
+        <div class="spread-desc">The most universal spread. Reflects where you've been, where you are, and where you're headed.</div>
+      </button>
+      <button class="spread-option" onclick="selectSpread('sao')">
+        <div class="spread-count">3 Cards</div>
+        <div class="spread-name">Situation · Action · Outcome</div>
+        <div class="spread-desc">Decision-focused. Good for navigating a specific question or challenge with a clear path forward.</div>
+      </button>
+      <button class="spread-option" onclick="selectSpread('celtic')">
+        <div class="spread-count">10 Cards</div>
+        <div class="spread-name">The Celtic Cross</div>
+        <div class="spread-desc">The classic deep-dive reading covering your situation, what's crossing it, past, future, hopes, fears, and the final outcome.</div>
+      </button>
+    </div>
+    <div style="text-align:center">
+      <button class="begin-btn" id="begin-btn" onclick="beginShuffle()">Shuffle the deck</button>
+    </div>
+  </div>
+
+  <!-- Shuffle screen -->
+  <div id="shuffle-screen">
+    <div class="shuffle-cards" id="shuffle-cards">
+      <div class="shuffle-card">
+        <svg width="50" height="80" viewBox="0 0 60 96" fill="none"><circle cx="30" cy="48" r="22" stroke="var(--back-ornament)" stroke-width="1"/><line x1="30" y1="10" x2="30" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="8" y1="48" x2="52" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="30,14 35,30 52,30 38,40 43,56 30,46 17,56 22,40 8,30 25,30" stroke="var(--back-ornament)" stroke-width=".8" fill="none"/></svg>
+      </div>
+      <div class="shuffle-card">
+        <svg width="50" height="80" viewBox="0 0 60 96" fill="none"><circle cx="30" cy="48" r="22" stroke="var(--back-ornament)" stroke-width="1"/><line x1="30" y1="10" x2="30" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="8" y1="48" x2="52" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="30,14 35,30 52,30 38,40 43,56 30,46 17,56 22,40 8,30 25,30" stroke="var(--back-ornament)" stroke-width=".8" fill="none"/></svg>
+      </div>
+      <div class="shuffle-card">
+        <svg width="50" height="80" viewBox="0 0 60 96" fill="none"><circle cx="30" cy="48" r="22" stroke="var(--back-ornament)" stroke-width="1"/><line x1="30" y1="10" x2="30" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="8" y1="48" x2="52" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="30,14 35,30 52,30 38,40 43,56 30,46 17,56 22,40 8,30 25,30" stroke="var(--back-ornament)" stroke-width=".8" fill="none"/></svg>
+      </div>
+    </div>
+    <div class="shuffle-title">Shuffling your deck</div>
+    <div class="shuffle-prompt" id="shuffle-prompt">Take a slow breath and settle in.</div>
+    <button class="shuffle-tap-btn" id="shuffle-tap-btn" onclick="revealReading()" style="opacity:0;pointer-events:none">Draw your cards</button>
+  </div>
+
+  <!-- Reading result -->
+  <div id="reading-result">
+    <div class="spread-title-display" id="spread-title-display"></div>
+
+    <!-- PPF / SAO layout -->
+    <div class="spread-cards" id="spread-cards-simple" style="display:none"></div>
+
+    <!-- Celtic Cross layout -->
+    <div class="celtic-grid" id="spread-cards-celtic" style="display:none"></div>
+
+    <!-- Selected card detail -->
+    <div id="selected-card-detail">
+      <div class="selected-card-header" id="selected-card-header"></div>
+      <div class="panels" style="margin-top:0">
+        <div class="panel visible" id="sr-panel-lore">
+          <div class="panel-label">About this card</div>
+          <div class="lore-section"><div class="lore-heading">Symbolism &amp; imagery</div><div class="lore-text" id="sr-symbolism"></div></div>
+          <div class="lore-section"><div class="lore-heading">Core themes</div><div class="theme-chips" id="sr-themes"></div></div>
+          <div class="lore-section"><div class="lore-heading">In a reading</div><div class="lore-text" id="sr-in-reading"></div></div>
+        </div>
+        <div class="panel visible" id="sr-panel-advice">
+          <div class="panel-label" id="sr-advice-label">Invitation</div>
+          <div class="advice-wrap"><div class="advice-text" id="sr-advice"></div></div>
+        </div>
+        <div class="panel visible" id="sr-panel-prompts">
+          <div class="panel-label">Journal prompts</div>
+          <ul class="prompt-list" id="sr-prompts"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claude interpretation -->
+    <div class="claude-panel" id="claude-panel">
+      <div class="claude-panel-label"><span class="claude-label-star">✦</span> Reading interpretation</div>
+      <div id="claude-content">
+        <button class="interpret-btn" id="interpret-btn" onclick="getInterpretation()">
+          <span>Interpret this reading</span>
+        </button>
+        <p style="font-family:'Sora',sans-serif;font-size:0.78rem;color:var(--text3);margin-top:.75rem;line-height:1.6">Claude will synthesise all the cards together, considering their positions and how they speak to each other.</p>
+      </div>
+    </div>
+
+    <button class="restart-btn" onclick="restartReadings()">← New reading</button>
+  </div>
+</div>
+
+<!-- ══════════════ BROWSE VIEW ══════════════ -->
 <div id="view-browse"><div id="browse-content"></div></div>
+
+<!-- ══════════════ DETAIL OVERLAY ══════════════ -->
 <div id="detail-overlay">
   <div class="detail-inner">
     <button class="back-btn" onclick="closeDetail()">← Back to all cards</button>
     <div class="detail-card">
       <div class="card-arcana" id="det-arcana"></div>
       <div class="card-symbol" id="det-symbol"></div>
-      <div class="card-title" id="det-title"></div>
+      <div class="card-title"  id="det-title"></div>
       <div class="card-keywords" id="det-keywords"></div>
       <div class="card-divider"></div>
-      <div class="reversed-pill" id="det-upright-pill">Upright</div>
-      <div class="reversed-pill" id="det-pill">Reversed</div>
+      <div class="orientation-pill upright"  id="det-upright-pill">Upright</div>
+      <div class="orientation-pill reversed" id="det-pill">Reversed</div>
       <div class="card-meaning" id="det-meaning"></div>
     </div>
     <div class="detail-toggle-row">
-      <button class="orientation-btn active" id="det-btn-up" onclick="setDetailOrientation(false)">Upright</button>
-      <button class="orientation-btn" id="det-btn-rev" onclick="setDetailOrientation(true)">Reversed</button>
+      <button class="orientation-btn active" id="det-btn-up"  onclick="setDetailOrientation(false)">Upright</button>
+      <button class="orientation-btn"        id="det-btn-rev" onclick="setDetailOrientation(true)">Reversed</button>
     </div>
     <div class="detail-panels" id="detail-panels"></div>
   </div>
 </div>
-<script>
 
+<script>
 const MAJOR=[
 {id:"m0",num:"0",suit:"major",name:"The Fool",symbol:"🌟",keywords:"New beginnings · Spontaneity · Leap of faith",element:"Air",astro:"Uranus",numNote:"Zero stands outside all sequence — before the journey begins, full of potential and empty of experience. It is the number of infinite possibility.",upright:"A new journey begins. Step forward with an open heart — the path reveals itself as you walk it.",reversed:"Recklessness clouds your path. Pause before leaping — something important hasn't been considered yet.",symbolism:"In the Rider-Waite deck, the Fool stands at the edge of a cliff, pack over one shoulder, white rose in hand, gazing upward while a small dog leaps at his heels. He is numbered zero — before all things. The cliff represents the unknown; the rose, purity of intention; the dog, worldly instinct and caution he cheerfully ignores.",themes:["Beginnings","Innocence","Risk","Freedom","Trust","Openness","The unknown","Play"],in_reading:"The Fool appears when a new chapter is beginning — a journey, project, relationship, or inner shift. Upright: step forward with openness. Reversed: naïveté, poor planning, or a leap taken before you're truly ready.",advice_upright:"Something new is asking for your full, unguarded yes. Let yourself begin without needing to see the whole path first.",advice_reversed:"Before you move, sit still. The impulsive choice and the courageous one feel similar — take a breath to tell them apart.",prompts_upright:["What new beginning have you been too afraid to step into? What's one small step you could take today?","Where in your life are you playing it too safe? What would you do if you knew you couldn't fail?","Think of a time you leaped into the unknown and it worked out. What did that teach you about trust?"],prompts_reversed:["Where might you be acting impulsively? What would a wiser version of you pause to consider first?","Is there a risk you're taking that doesn't feel fully aligned with your values? What's driving it?","What's one area of your life that feels chaotic? What small act of groundedness could help?"]},
 {id:"m1",num:"I",suit:"major",name:"The Magician",symbol:"⚡",keywords:"Willpower · Skill · Manifestation",element:"Air",astro:"Mercury",numNote:"One is the number of will and individuality — the point from which all things emanate. It represents the self acting upon the world for the first time.",upright:"You have everything you need. Focus your intention and turn your vision into reality.",reversed:"Potential sits untapped or misused. Doubt and distraction scatter your power.",symbolism:"The Magician stands at a table bearing all four suit symbols. One hand points a wand skyward, the other toward earth: 'As above, so below.' The infinity symbol floats above his head. He does not wait for resources; he works with what is already present.",themes:["Will","Skill","Focus","Manifestation","Resourcefulness","Alchemy","Action","Power"],in_reading:"The Magician appears when all the pieces are in place — if you choose to act. Upright: you have the tools and timing — use them. Reversed: abilities squandered through distraction, or manipulation at play.",advice_upright:"Don't wait for better conditions. The resources you have right now are enough to begin.",advice_reversed:"Audit where your energy actually goes today. What you give attention to grows — is it what you chose?",prompts_upright:["What goal do you already have the skills to pursue but haven't begun? What's stopping you?","Write about a time you made something happen through sheer focus and will.","What resources — skills, relationships, tools — do you tend to undervalue?"],prompts_reversed:["Where do you feel scattered or unable to concentrate? What's pulling your focus away?","Is there a situation where you're using your abilities in a way that doesn't feel fully honest?","What would change if you truly believed you were capable of what you most want?"]},
@@ -301,56 +524,248 @@ mkCard("pqu","Qu","Pentacles","Queen of Pentacles","🪙","Nurture · Practicali
 mkCard("pki","Ki","Pentacles","King of Pentacles","🪙","Wealth · Reliability · Practical wisdom","Earth","Air of Earth","The King of Pentacles is the mastery of the material world — not just in wealth but in the wisdom of how to create, sustain, and share it.","Lead with practical wisdom and generosity. Your capacity to create material security is a gift to be shared.","Materialism, stubbornness, or wealth used as control.","A King sits on a throne carved with bulls — Taurus, the earth sign — surrounded by vines and flowers, holding a sceptre and a pentacle. He is the abundance of the earth in its most mature form — wealthy, generous, deeply rooted.",["Wealth","Practicality","Reliability","Generosity","Mastery","Security","Leadership"],"The master of the material world. Upright: lead with practical wisdom and generosity. Reversed: materialism or using wealth to control.","Your practical wisdom is a real resource. Share it generously rather than hoarding it.","Check whether your relationship with money and material security is serving your life — or running it.",["Write about your own version of practical wisdom — the things you've learned about how to make things work.","Where in your life do you demonstrate the most reliable, grounded leadership?","Write about your relationship with wealth — not just money but the full sense of material wellbeing."],["Write about the way money or material security has become a controlling factor in your life or relationships.","Where is stubbornness around practical matters preventing necessary change?","Write about the difference between practical wisdom and materialism as you've seen them play out."])
 ];
 const ALL_CARDS=[...MAJOR,...WANDS,...CUPS,...SWORDS,...PENTACLES];
+// ═══════════════════════════════════════════
+// ELEMENT & ASTROLOGY TOOLTIP CONTENT
+// ═══════════════════════════════════════════
+const ELEMENT_INFO={
+  "Fire":"Fire represents will, passion, creativity, and transformation. Fire cards tend to deal with action, ambition, inspiration, and the driving force behind what we do.",
+  "Water":"Water represents emotion, intuition, the unconscious, and relationships. Water cards tend to deal with feeling, connection, dreams, and the inner world.",
+  "Air":"Air represents thought, communication, truth, and conflict. Air cards tend to deal with ideas, decisions, language, and the mind's relationship with reality.",
+  "Earth":"Earth represents the material world, the body, work, and practical matters. Earth cards tend to deal with money, health, stability, and what we build in the physical world."
+};
+const ASTRO_INFO={
+  "Sun":"The Sun in astrology governs vitality, identity, and conscious will. It is the self at its most essential — what shines outward.",
+  "Moon":"The Moon governs emotion, intuition, the unconscious, and cycles. It rules what shifts, what is hidden, and what is felt rather than thought.",
+  "Mercury":"Mercury governs communication, intellect, and exchange. It rules how we think, speak, write, and move between ideas.",
+  "Venus":"Venus governs love, beauty, pleasure, and value. It rules what we find beautiful, what we desire, and how we relate to others.",
+  "Mars":"Mars governs action, drive, conflict, and desire. It rules how we assert ourselves, compete, and pursue what we want.",
+  "Jupiter":"Jupiter governs expansion, abundance, wisdom, and fortune. It rules growth, optimism, and the urge to reach beyond our current limits.",
+  "Saturn":"Saturn governs discipline, structure, limitation, and time. It rules what we must earn through effort, and the consequences of our choices.",
+  "Uranus":"Uranus governs sudden change, innovation, and liberation. It rules what breaks the mold, what disrupts the expected, and what sets us free.",
+  "Neptune":"Neptune governs dreams, illusion, spirituality, and dissolution. It rules what dissolves boundaries, what inspires, and what deceives.",
+  "Pluto":"Pluto governs transformation, power, death, and rebirth. It rules what goes to the deepest level, what is destroyed to be reborn.",
+  "Aries":"Aries is the sign of initiative, courage, and new beginnings. It is direct, energetic, and first to act.",
+  "Taurus":"Taurus is the sign of stability, sensuality, and material abundance. It is patient, persistent, and deeply grounded.",
+  "Gemini":"Gemini is the sign of duality, communication, and curiosity. It is adaptable, quick-witted, and drawn to ideas.",
+  "Cancer":"Cancer is the sign of emotion, home, and nurture. It is intuitive, protective, and deeply feeling.",
+  "Leo":"Leo is the sign of creativity, confidence, and self-expression. It is warm, dramatic, and driven to shine.",
+  "Virgo":"Virgo is the sign of analysis, service, and attention to detail. It is precise, practical, and devoted to improvement.",
+  "Libra":"Libra is the sign of balance, beauty, and relationship. It is diplomatic, harmonious, and concerned with fairness.",
+  "Scorpio":"Scorpio is the sign of depth, transformation, and intensity. It is perceptive, powerful, and drawn to what lies beneath the surface.",
+  "Sagittarius":"Sagittarius is the sign of expansion, truth, and adventure. It is optimistic, philosophical, and always reaching further.",
+  "Capricorn":"Capricorn is the sign of ambition, discipline, and mastery. It is patient, strategic, and driven to build something lasting.",
+  "Aquarius":"Aquarius is the sign of innovation, community, and independence. It is forward-thinking, humanitarian, and happily unconventional.",
+  "Pisces":"Pisces is the sign of dreams, empathy, and transcendence. It is compassionate, intuitive, and at home in the world of feeling."
+};
+// compound astro keys
+["Mars in Aries","Venus in Aries","Sun in Aries","Saturn in Leo","Jupiter in Leo","Mars in Leo","Mercury in Sagittarius","Moon in Sagittarius","Saturn in Sagittarius",
+ "Venus in Cancer","Mercury in Cancer","Moon in Cancer","Sun in Scorpio","Mars in Scorpio","Venus in Scorpio","Saturn in Pisces","Jupiter in Pisces","Mars in Pisces",
+ "Moon in Libra","Saturn in Libra","Jupiter in Libra","Venus in Aquarius","Mercury in Aquarius","Moon in Aquarius","Jupiter in Gemini","Mars in Gemini","Sun in Gemini",
+ "Jupiter in Capricorn","Mars in Capricorn","Sun in Capricorn","Mercury in Taurus","Moon in Taurus","Saturn in Taurus","Sun in Virgo","Venus in Virgo","Mercury in Virgo",
+ "Earth of Fire","Fire of Fire","Water of Fire","Air of Fire",
+ "Earth of Water","Fire of Water","Water of Water","Air of Water",
+ "Earth of Air","Fire of Air","Water of Air","Air of Air",
+ "Earth of Earth","Fire of Earth","Water of Earth","Air of Earth"
+].forEach(k=>{
+  if(!ASTRO_INFO[k]){
+    const parts=k.split(" of ");
+    if(parts.length===2){
+      const [el,suit]=parts;
+      ASTRO_INFO[k]=`${el} of ${suit}: In court card dignities, this indicates the ${el.toLowerCase()} quality expressing through the ${suit.toLowerCase()} energy of the suit.`;
+    } else {
+      const [planet,,sign]=k.split(" ");
+      if(ASTRO_INFO[planet]&&ASTRO_INFO[sign]){
+        ASTRO_INFO[k]=`${planet} in ${sign}: ${ASTRO_INFO[planet].split('.')[0]}. In ${sign}, this energy ${sign==='Aries'||sign==='Leo'||sign==='Sagittarius'?'is amplified and outward':'turns inward and takes on the qualities of '+sign}.`;
+      }
+    }
+  }
+});
 
-let isDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
-let currentCard=null,currentReversed=false,viewOrientation=false,revealed=false,detailCard=null,detailReversed=false;
-function applyTheme(){document.documentElement.setAttribute('data-theme',isDark?'dark':'light');document.getElementById('theme-icon').textContent=isDark?'🌙':'☀️';document.getElementById('theme-label').textContent=isDark?'Dark':'Light';}
-function toggleTheme(){isDark=!isDark;applyTheme();}
+// ═══════════════════════════════════════════
+// NUMEROLOGY UNIVERSAL MEANINGS
+// ═══════════════════════════════════════════
+const NUM_UNIVERSAL={
+  "0":"Zero is the void before creation — infinite potential, no form. It stands outside all cycles, containing everything and nothing. The card of pure openness.",
+  "1":"One is the number of beginnings and individuality — the first point of existence, the self acting upon the world. It is will, initiative, and singular focus.",
+  "2":"Two is the number of duality and partnership — the meeting of two forces, reflection, and choice. It is the pause, the threshold, the space between.",
+  "3":"Three is the number of creation and expression — two forces combining to produce a third thing. It is growth, joy, communication, and the first flowering.",
+  "4":"Four is the number of structure and stability — the four directions, four seasons, four elements. It is the foundation, the form that holds its shape.",
+  "5":"Five is the number of change and challenge — the disruption of four's stability. It brings conflict, freedom, adventure, and the lesson in instability.",
+  "6":"Six is the number of harmony and integration — the resolution of five's chaos. It is beauty, reciprocity, love, and the balance achieved through relationship.",
+  "7":"Seven is the mystical number of inner truth and spiritual seeking — the number of cycles, completion, and the soul's deeper knowing.",
+  "8":"Eight is the number of power and mastery — the infinity symbol upright. It speaks of strength that renews itself, of effort compounding over time.",
+  "9":"Nine is the number of completion and wisdom — the last single digit, containing all that came before. It is the sage at the end of the journey.",
+  "10":"Ten begins a new cycle — one at a higher level. It is completion and renewal at once, the wheel having turned a full rotation.",
+  "Pg":"Pages are the students of their suit — curious, open, and at the very beginning of their learning. They bring fresh energy and potential not yet shaped by experience.",
+  "Kn":"Knights are the suits in motion — the active, questing expression of their element, neither as raw as the Page nor as masterful as the Queen or King.",
+  "Qu":"Queens are the mature, inward expression of their suit — they have embodied their element deeply and express it with authority, warmth, and wisdom.",
+  "Ki":"Kings are the outward, masterful expression of their suit — they govern their element with confidence, strategy, and the full weight of experience.",
+  "I":"One: the number of will and individuality. The self acting upon the world for the first time.",
+  "II":"Two: the number of duality and reflection — the threshold between worlds, the pause between action and reaction.",
+  "III":"Three: the number of creation — two forces combining to produce something entirely new.",
+  "IV":"Four: the number of foundation and form — the stable structure that holds its shape under pressure.",
+  "V":"Five: the number of disruption and challenge — the test of what the four has built.",
+  "VI":"Six: the number of harmony — the union of opposites, the balance achieved after five's disruption.",
+  "VII":"Seven: the number of spiritual victory and the seeker — the prize won through sustained, inner effort.",
+  "VIII":"Eight: the number of power and infinity — strength that renews and compounds over time.",
+  "IX":"Nine: the number of completion and wisdom — the fullness of the single-digit journey.",
+  "X":"Ten: the wheel completed and beginning again at a higher level.",
+  "XI":"Eleven (reducing to two): the higher mirror — weighing of opposites, truth, and balance at an elevated level.",
+  "XII":"Twelve (reducing to three): cosmic completion and sacrifice — giving something up to gain something greater.",
+  "XIII":"Thirteen (reducing to four): transformation and rebirth — the ending that makes new foundations possible.",
+  "XIV":"Fourteen (reducing to five): the alchemical process — the long blend of opposing forces into something new.",
+  "XV":"Fifteen (reducing to six): the shadow of harmony — love and beauty distorted into obsession and attachment.",
+  "XVI":"Sixteen (reducing to seven): sudden spiritual revelation — the lightning bolt that breaks all illusion at once.",
+  "XVII":"Seventeen (reducing to eight): self-renewing hope — the steady light that survives real darkness.",
+  "XVIII":"Eighteen (reducing to nine): completion through the dark — wisdom earned by travelling through mystery.",
+  "XIX":"Nineteen (reducing to one): the radiant return to self — individuality fully illuminated after the full journey.",
+  "XX":"Twenty (reducing to two): the higher reckoning — the soul's accounting at an elevated level.",
+  "XXI":"Twenty-one (reducing to three): creative completion — the full circle of expression fully realised."
+};
+
+// ═══════════════════════════════════════════
+// SPREAD DEFINITIONS
+// ═══════════════════════════════════════════
+const SPREADS={
+  ppf:{name:"Past · Present · Future",positions:["Past","Present","Future"]},
+  sao:{name:"Situation · Action · Outcome",positions:["Situation","Action","Outcome"]},
+  celtic:{name:"The Celtic Cross",positions:[
+    "The Present","What Crosses You","The Foundation","The Past",
+    "Possible Future","Near Future","Your Attitude","External Influences",
+    "Hopes & Fears","Final Outcome"
+  ]}
+};
+
+// shuffle prompts
+const SHUFFLE_PROMPTS=[
+  "Take a slow breath and settle in.",
+  "Think of the question or situation you're bringing to this reading.",
+  "Clear your mind of the day's noise.",
+  "Set your intention for this reading.",
+  "What do you most need to see clearly right now?",
+  "Let go of what you expect the cards to say.",
+  "Hold your question gently — don't force it.",
+  "When you feel ready, draw your cards."
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let currentCard=null,currentReversed=false,viewOrientation=false,revealed=false;
+let detailCard=null,detailReversed=false;
+let selectedSpread=null,drawnCards=[],selectedSlotIndex=null;
+let shuffleInterval=null,shufflePromptInterval=null,shuffleDone=false;
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function getLabel(card){return card.arcanaLabel||(card.suit==='major'?`Major Arcana · ${card.num}`:`${cap(card.suit)} · ${card.num}`);}
+
+function drawUniqueCards(n){
+  const pool=[...ALL_CARDS];
+  const drawn=[];
+  while(drawn.length<n){
+    const i=Math.floor(Math.random()*pool.length);
+    drawn.push({card:pool[i],reversed:Math.random()<0.25});
+    pool.splice(i,1);
+  }
+  return drawn;
+}
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
 function showTab(tab){
-  document.getElementById('view-daily').style.display=tab==='daily'?'flex':'none';
-  document.getElementById('view-browse').style.display=tab==='browse'?'flex':'none';
-  document.getElementById('tab-daily').classList.toggle('active',tab==='daily');
-  document.getElementById('tab-browse').classList.toggle('active',tab==='browse');
+  ['daily','readings','browse'].forEach(t=>{
+    document.getElementById('view-'+t).style.display=t===tab?(t==='browse'||t==='readings'?'flex':'flex'):'none';
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
   if(tab==='browse')renderBrowse();
 }
-function getDateCard(){const d=new Date();const seed=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();return{card:ALL_CARDS[seed%ALL_CARDS.length],reversed:(seed%7)<2};}
-function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+// ═══════════════════════════════════════════
+// CORRESPONDENCES PANEL (shared)
+// ═══════════════════════════════════════════
+function buildCorrHTML(card){
+  const num=card.num||'';
+  const numUniv=NUM_UNIVERSAL[num]||'';
+  const numSpecific=card.numNote||'';
+  const elInfo=ELEMENT_INFO[card.element]||'';
+  const astInfo=ASTRO_INFO[card.astro]||'';
+
+  const ttEl=elInfo?`<div class="tooltip-wrap"><button class="tooltip-icon" tabindex="0">?</button><div class="tooltip-box">${elInfo}</div></div>`:'';
+  const ttAst=astInfo?`<div class="tooltip-wrap"><button class="tooltip-icon" tabindex="0">?</button><div class="tooltip-box">${astInfo}</div></div>`:'';
+
+  const numBlock=numUniv?`<div class="corr-item corr-full">
+    <div class="num-label-row">
+      <span class="num-number">${num}</span>
+      <span class="num-title">Numerology</span>
+    </div>
+    <div class="num-universal">${numUniv}</div>
+    ${numSpecific?`<div class="num-note">${numSpecific}</div>`:''}
+  </div>`:'';
+
+  return `
+    <div class="corr-item">
+      <div class="corr-label-row"><span class="corr-label">Element</span>${ttEl}</div>
+      <div class="corr-value">${card.element||'—'}</div>
+    </div>
+    <div class="corr-item">
+      <div class="corr-label-row"><span class="corr-label">Astrology</span>${ttAst}</div>
+      <div class="corr-value">${card.astro||'—'}</div>
+    </div>
+    ${numBlock}`;
+}
+
+function renderChips(id,arr){const el=document.getElementById(id);if(!el)return;el.innerHTML='';(arr||[]).forEach(t=>{const s=document.createElement('span');s.className='chip';s.textContent=t;el.appendChild(s);});}
+function renderPromptList(id,arr){const ul=document.getElementById(id);if(!ul)return;ul.innerHTML='';(arr||[]).forEach((p,i)=>{const li=document.createElement('li');li.innerHTML=`<span class="prompt-num">${i+1}.</span><span class="prompt-text">${p}</span>`;ul.appendChild(li);});}
+
+// ═══════════════════════════════════════════
+// DAILY — populate
+// ═══════════════════════════════════════════
+function getDateCard(){
+  const d=new Date();
+  const seed=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  return{card:ALL_CARDS[seed%ALL_CARDS.length],reversed:(seed%7)<2};
+}
+
 function populateDailyCard(card,reversed){
   currentCard=card;currentReversed=reversed;viewOrientation=reversed;
-  const label=card.arcanaLabel||(card.suit==='major'?`Major Arcana · ${card.num}`:`${cap(card.suit)} · ${card.num}`);
-  document.getElementById('card-arcana').textContent=label;
+  document.getElementById('card-arcana').textContent=getLabel(card);
   document.getElementById('card-symbol').textContent=card.symbol;
   document.getElementById('card-title').textContent=card.name;
   document.getElementById('card-keywords').textContent=card.keywords;
   updateDailyMeaning();
 }
+
 function updateDailyMeaning(){
   const rev=viewOrientation;
   document.getElementById('card-meaning-front').textContent=rev?currentCard.reversed:currentCard.upright;
-  document.getElementById('reversed-pill').style.display=rev?'block':'none';
   document.getElementById('upright-pill').style.display=rev?'none':'block';
+  document.getElementById('reversed-pill').style.display=rev?'block':'none';
   document.getElementById('btn-orientation').textContent=rev?'↑ Show Upright':'↓ Show Reversed';
-  populateCorrPanel(currentCard);
+  document.getElementById('corr-grid').innerHTML=buildCorrHTML(currentCard);
   document.getElementById('lore-symbolism').textContent=currentCard.symbolism;
   renderChips('lore-themes',currentCard.themes);
   document.getElementById('lore-in-reading').textContent=currentCard.in_reading;
   document.getElementById('advice-text').textContent=rev?currentCard.advice_reversed:currentCard.advice_upright;
-  renderPrompts('prompt-list',rev?currentCard.prompts_reversed:currentCard.prompts_upright);
+  renderPromptList('prompt-list',rev?currentCard.prompts_reversed:currentCard.prompts_upright);
 }
-function populateCorrPanel(card){
-  const g=document.getElementById('corr-grid');
-  const num=card.num||card.arcanaLabel;
-  const numNote=card.numNote||'';
-  g.innerHTML=`<div class="corr-item"><div class="corr-label">Element</div><div class="corr-value">${card.element||'—'}</div></div><div class="corr-item"><div class="corr-label">Astrology</div><div class="corr-value">${card.astro||'—'}</div></div>${numNote?`<div class="corr-item corr-full"><div class="corr-label">Numerology · ${num}</div><div class="num-note">${numNote}</div></div>`:''}`;
+
+function showPanels(){
+  ['panel-corr','panel-lore','panel-advice','panel-prompts'].forEach((id,i)=>{
+    setTimeout(()=>document.getElementById(id).classList.add('visible'),150+i*180);
+  });
+  document.getElementById('btn-orientation').classList.remove('hidden-ctrl');
+  document.getElementById('btn-draw').classList.remove('hidden-ctrl');
 }
-function renderChips(id,arr){const el=document.getElementById(id);el.innerHTML='';(arr||[]).forEach(t=>{const s=document.createElement('span');s.className='chip';s.textContent=t;el.appendChild(s);});}
-function renderPrompts(id,arr){const ul=document.getElementById(id);ul.innerHTML='';(arr||[]).forEach((p,i)=>{const li=document.createElement('li');li.innerHTML=`<span class="prompt-num">${i+1}.</span><span class="prompt-text">${p}</span>`;ul.appendChild(li);});}
-function showPanels(){['panel-corr','panel-lore','panel-advice','panel-prompts'].forEach((id,i)=>{setTimeout(()=>document.getElementById(id).classList.add('visible'),150+i*180);});document.getElementById('btn-orientation').classList.remove('hidden-ctrl');document.getElementById('btn-draw').classList.remove('hidden-ctrl');}
 function hidePanels(){['panel-corr','panel-lore','panel-advice','panel-prompts'].forEach(id=>document.getElementById(id).classList.remove('visible'));}
+
 function toggleFlip(){
   const inner=document.getElementById('card-inner');
   if(!revealed){revealed=true;inner.classList.add('revealed');showPanels();}
-  else{if(inner.classList.contains('revealed')){inner.classList.remove('revealed');hidePanels();}else{inner.classList.add('revealed');showPanels();}}
+  else{inner.classList.contains('revealed')?(inner.classList.remove('revealed'),hidePanels()):(inner.classList.add('revealed'),showPanels());}
 }
 function toggleOrientation(){viewOrientation=!viewOrientation;updateDailyMeaning();}
 function drawRandom(){
@@ -359,9 +774,212 @@ function drawRandom(){
   hidePanels();
   document.getElementById('btn-orientation').classList.add('hidden-ctrl');
   document.getElementById('btn-draw').classList.add('hidden-ctrl');
-  populate(ALL_CARDS[Math.floor(Math.random()*ALL_CARDS.length)],Math.random()<0.25);
+  const idx=Math.floor(Math.random()*ALL_CARDS.length);
+  populateDailyCard(ALL_CARDS[idx],Math.random()<0.25);
 }
-function populate(card,reversed){populateDailyCard(card,reversed);}
+
+// ═══════════════════════════════════════════
+// READINGS — spread picker
+// ═══════════════════════════════════════════
+function selectSpread(key){
+  selectedSpread=key;
+  document.querySelectorAll('.spread-option').forEach(el=>el.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const btn=document.getElementById('begin-btn');
+  btn.classList.add('ready');
+}
+
+// ═══════════════════════════════════════════
+// READINGS — shuffle
+// ═══════════════════════════════════════════
+function beginShuffle(){
+  if(!selectedSpread)return;
+  document.getElementById('spread-picker-section').style.display='none';
+  const ss=document.getElementById('shuffle-screen');
+  ss.style.display='flex';
+  shuffleDone=false;
+
+  // animate cards
+  document.querySelectorAll('.shuffle-card').forEach(c=>c.classList.add('animating'));
+
+  // rotate prompts
+  let pi=0;
+  const promptEl=document.getElementById('shuffle-prompt');
+  promptEl.textContent=SHUFFLE_PROMPTS[0];
+  shufflePromptInterval=setInterval(()=>{
+    promptEl.style.opacity='0';
+    setTimeout(()=>{pi=(pi+1)%SHUFFLE_PROMPTS.length;promptEl.textContent=SHUFFLE_PROMPTS[pi];promptEl.style.opacity='1';},400);
+  },2800);
+
+  // show tap button after 4s
+  setTimeout(()=>{
+    const btn=document.getElementById('shuffle-tap-btn');
+    btn.style.opacity='1';btn.style.pointerEvents='auto';
+    shuffleDone=true;
+  },4000);
+}
+
+function revealReading(){
+  if(!shuffleDone)return;
+  clearInterval(shufflePromptInterval);
+  document.querySelectorAll('.shuffle-card').forEach(c=>c.classList.remove('animating'));
+  document.getElementById('shuffle-screen').style.display='none';
+
+  // draw cards
+  const spread=SPREADS[selectedSpread];
+  drawnCards=drawUniqueCards(spread.positions.length);
+  selectedSlotIndex=null;
+
+  // show result
+  const rr=document.getElementById('reading-result');
+  rr.style.display='flex';
+  document.getElementById('spread-title-display').textContent=spread.name;
+
+  if(selectedSpread==='celtic'){renderCelticCross();}
+  else{renderSimpleSpread();}
+
+  // reset claude panel
+  document.getElementById('claude-content').innerHTML=`
+    <button class="interpret-btn" id="interpret-btn" onclick="getInterpretation()"><span>Interpret this reading</span></button>
+    <p style="font-family:'Sora',sans-serif;font-size:0.78rem;color:var(--text3);margin-top:.75rem;line-height:1.6">Claude will synthesise all the cards together, considering their positions and how they speak to each other.</p>`;
+  document.getElementById('selected-card-detail').style.display='none';
+}
+
+function miniCardHTML(entry,idx,posName){
+  const {card,reversed}=entry;
+  const revClass=reversed?' reversed-card':'';
+  const revLabel=reversed?`<div class="mini-rev">Rev</div>`:'';
+  return `<div class="spread-mini-card${revClass}" id="slot-${idx}" onclick="selectReadingCard(${idx})" title="${posName}">
+    <div class="mini-symbol">${card.symbol}</div>
+    <div class="mini-name">${card.name}</div>
+    ${revLabel}
+  </div>`;
+}
+
+function renderSimpleSpread(){
+  const spread=SPREADS[selectedSpread];
+  const container=document.getElementById('spread-cards-simple');
+  container.style.display='flex';
+  document.getElementById('spread-cards-celtic').style.display='none';
+  container.innerHTML='';
+  drawnCards.forEach((entry,i)=>{
+    const slot=document.createElement('div');
+    slot.className='spread-slot';
+    slot.innerHTML=`<div class="slot-label">${spread.positions[i]}</div>${miniCardHTML(entry,i,spread.positions[i])}`;
+    container.appendChild(slot);
+  });
+}
+
+function renderCelticCross(){
+  const positions=SPREADS.celtic.positions;
+  document.getElementById('spread-cards-simple').style.display='none';
+  const container=document.getElementById('spread-cards-celtic');
+  container.style.display='grid';
+  container.innerHTML='';
+
+  // positions[0]=present, [1]=crossing, [2]=foundation/below, [3]=past/left, [4]=possible future/above, [5]=near future/right, [6-9]=staff column
+  const areaMap=['cs-center','cs-cross','cs-bottom','cs-left','cs-top','cs-right','cs-sig1','cs-sig2','cs-sig3','cs-sig4'];
+  drawnCards.forEach((entry,i)=>{
+    const div=document.createElement('div');
+    div.className=`celtic-slot ${areaMap[i]}`;
+    if(i===1){
+      // crossing card — special stacked display
+      div.innerHTML=`<div class="slot-label">${positions[i]}</div>
+        <div class="cross-stack">
+          <div class="cross-main">${miniCardHTML(drawnCards[0],0,positions[0]).replace(`id="slot-0"`,`id="slot-0-bg"`)}</div>
+          <div class="cross-overlay">${miniCardHTML(entry,i,positions[i])}</div>
+        </div>`;
+    } else if(i===0){
+      // present shown under crossing — skip standalone, only shown in cross-stack
+      div.style.display='none';
+      div.innerHTML='';
+    } else {
+      div.innerHTML=`<div class="slot-label">${positions[i]}</div>${miniCardHTML(entry,i,positions[i])}`;
+    }
+    container.appendChild(div);
+  });
+}
+
+function selectReadingCard(idx){
+  selectedSlotIndex=idx;
+  document.querySelectorAll('.spread-mini-card').forEach(el=>el.classList.remove('selected-card'));
+  const el=document.getElementById('slot-'+idx);
+  if(el)el.classList.add('selected-card');
+
+  const {card,reversed}=drawnCards[idx];
+  const posName=SPREADS[selectedSpread].positions[idx];
+  const detail=document.getElementById('selected-card-detail');
+  detail.style.display='flex';
+
+  // header
+  const pill=reversed?`<span class="orientation-pill reversed" style="display:block;width:fit-content">Reversed</span>`:`<span class="orientation-pill upright" style="display:block;width:fit-content">Upright</span>`;
+  document.getElementById('selected-card-header').innerHTML=`
+    <div class="selected-card-symbol">${card.symbol}</div>
+    <div class="selected-card-info">
+      <div class="selected-position">${posName}</div>
+      <div class="selected-name">${card.name}</div>
+      ${pill}
+    </div>`;
+
+  document.getElementById('sr-symbolism').textContent=card.symbolism||'';
+  renderChips('sr-themes',card.themes);
+  document.getElementById('sr-in-reading').textContent=card.in_reading||'';
+  document.getElementById('sr-advice-label').textContent=reversed?'Reversed invitation':'Upright invitation';
+  document.getElementById('sr-advice').textContent=reversed?card.advice_reversed:card.advice_upright;
+  renderPromptList('sr-prompts',reversed?card.prompts_reversed:card.prompts_upright);
+
+  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ═══════════════════════════════════════════
+// CLAUDE INTERPRETATION
+// ═══════════════════════════════════════════
+async function getInterpretation(){
+  const btn=document.getElementById('interpret-btn');
+  if(btn)btn.disabled=true;
+  const content=document.getElementById('claude-content');
+  content.innerHTML=`<div class="claude-thinking">✦ Reading the cards together…</div>`;
+
+  const spread=SPREADS[selectedSpread];
+  const cardLines=drawnCards.map((entry,i)=>`${spread.positions[i]}: ${entry.card.name}${entry.reversed?' (Reversed)':''}`).join('\n');
+  const cardDetails=drawnCards.map((entry,i)=>{
+    const {card,reversed}=entry;
+    return `**${spread.positions[i]}: ${card.name}${reversed?' (Reversed)':''}**\nKeywords: ${card.keywords}\nMeaning: ${reversed?card.reversed:card.upright}\nIn a reading: ${card.in_reading}`;
+  }).join('\n\n');
+
+  const prompt=`You are a thoughtful, grounded tarot reader helping someone learn to read cards and reflect on their life. The person has drawn the following spread:\n\nSpread: ${spread.name}\n\n${cardLines}\n\nCard details:\n${cardDetails}\n\nPlease give a flowing, synthesised interpretation of this reading as a whole. Consider:\n- How the cards speak to each other across positions\n- The overall story or theme the spread reveals\n- What the combination might be pointing to that no single card shows alone\n- End with a short, grounded question or reflection for the person to sit with\n\nTone: warm, insightful, and honest. Not mystical for its own sake. Treat the person as an intelligent adult. Around 250-350 words.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await res.json();
+    const text=(data.content||[]).map(b=>b.text||'').join('');
+    content.innerHTML=`<div class="claude-response">${text}</div>`;
+  }catch(e){
+    content.innerHTML=`<div class="claude-thinking">Something went wrong. Please try again.</div>`;
+  }
+}
+
+function restartReadings(){
+  selectedSpread=null;drawnCards=[];selectedSlotIndex=null;
+  clearInterval(shufflePromptInterval);
+  document.getElementById('reading-result').style.display='none';
+  document.getElementById('shuffle-screen').style.display='none';
+  document.getElementById('spread-cards-simple').innerHTML='';
+  document.getElementById('spread-cards-celtic').innerHTML='';
+  document.getElementById('selected-card-detail').style.display='none';
+  const pp=document.getElementById('spread-picker-section');
+  pp.style.display='block';
+  document.querySelectorAll('.spread-option').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('begin-btn').classList.remove('ready');
+}
+
+// ═══════════════════════════════════════════
+// BROWSE
+// ═══════════════════════════════════════════
 function renderBrowse(){
   const container=document.getElementById('browse-content');
   if(container.innerHTML)return;
@@ -379,30 +997,43 @@ function renderBrowse(){
     });
   });
 }
+
+// ═══════════════════════════════════════════
+// DETAIL OVERLAY
+// ═══════════════════════════════════════════
 function openDetail(card){detailCard=card;detailReversed=false;renderDetailCard();document.getElementById('detail-overlay').style.display='block';document.body.style.overflow='hidden';}
 function closeDetail(){document.getElementById('detail-overlay').style.display='none';document.body.style.overflow='';}
 function setDetailOrientation(rev){detailReversed=rev;document.getElementById('det-btn-up').classList.toggle('active',!rev);document.getElementById('det-btn-rev').classList.toggle('active',rev);renderDetailCard();}
+
 function renderDetailCard(){
   const card=detailCard;const rev=detailReversed;
-  const label=card.arcanaLabel||(card.suit==='major'?`Major Arcana · ${card.num}`:`${cap(card.suit)} · ${card.num}`);
-  document.getElementById('det-arcana').textContent=label;
+  document.getElementById('det-arcana').textContent=getLabel(card);
   document.getElementById('det-symbol').textContent=card.symbol;
   document.getElementById('det-title').textContent=card.name;
   document.getElementById('det-keywords').textContent=card.keywords;
   document.getElementById('det-meaning').textContent=rev?card.reversed:card.upright;
-  document.getElementById('det-pill').style.display=rev?'block':'none';
   document.getElementById('det-upright-pill').style.display=rev?'none':'block';
-  const numNote=card.numNote||'';const num=card.num||'';
+  document.getElementById('det-pill').style.display=rev?'block':'none';
   document.getElementById('detail-panels').innerHTML=`
-    <div class="panel visible"><div class="panel-label">Correspondences</div><div class="corr-grid"><div class="corr-item"><div class="corr-label">Element</div><div class="corr-value">${card.element||'—'}</div></div><div class="corr-item"><div class="corr-label">Astrology</div><div class="corr-value">${card.astro||'—'}</div></div>${numNote?`<div class="corr-item corr-full"><div class="corr-label">Numerology · ${num}</div><div class="num-note">${numNote}</div></div>`:''}</div></div>
-    <div class="panel visible"><div class="panel-label">About this card</div><div class="lore-section"><div class="lore-heading">Symbolism &amp; imagery</div><div class="lore-text">${card.symbolism||''}</div></div><div class="lore-section"><div class="lore-heading">Core themes</div><div class="theme-chips">${(card.themes||[]).map(t=>`<span class="chip">${t}</span>`).join('')}</div></div><div class="lore-section"><div class="lore-heading">In a reading</div><div class="lore-text">${card.in_reading||''}</div></div></div>
+    <div class="panel visible"><div class="panel-label">Correspondences</div><div class="corr-grid">${buildCorrHTML(card)}</div></div>
+    <div class="panel visible"><div class="panel-label">About this card</div>
+      <div class="lore-section"><div class="lore-heading">Symbolism &amp; imagery</div><div class="lore-text">${card.symbolism||''}</div></div>
+      <div class="lore-section"><div class="lore-heading">Core themes</div><div class="theme-chips">${(card.themes||[]).map(t=>`<span class="chip">${t}</span>`).join('')}</div></div>
+      <div class="lore-section"><div class="lore-heading">In a reading</div><div class="lore-text">${card.in_reading||''}</div></div>
+    </div>
     <div class="panel visible"><div class="panel-label">${rev?'Reversed':'Upright'} invitation</div><div class="advice-wrap"><div class="advice-text">${rev?card.advice_reversed:card.advice_upright}</div></div></div>
-    <div class="panel visible"><div class="panel-label">Journal prompts</div><ul class="prompt-list">${(rev?card.prompts_reversed:card.prompts_upright||[]).map((p,i)=>`<li><span class="prompt-num">${i+1}.</span><span class="prompt-text">${p}</span></li>`).join('')}</ul></div>
-  `;
+    <div class="panel visible"><div class="panel-label">Journal prompts</div><ul class="prompt-list">${(rev?card.prompts_reversed:card.prompts_upright||[]).map((p,i)=>`<li><span class="prompt-num">${i+1}.</span><span class="prompt-text">${p}</span></li>`).join('')}</ul></div>`;
 }
+
+// ═══════════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════════
 document.getElementById('card-scene').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleFlip();}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail();});
-applyTheme();
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
 const d=new Date();
 document.getElementById('date-line').textContent=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const{card,reversed}=getDateCard();
