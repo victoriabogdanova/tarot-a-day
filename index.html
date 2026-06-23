@@ -17,22 +17,22 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  --bg:#f0ece3;--bg2:#e4dfd5;--surface:#faf8f4;--border:#bdb5a6;
-  --text:#1c1812;--text2:#2e2a22;--text3:#4a4438;
+  --bg:#f0ece3;--bg2:#e4dfd5;--surface:#faf8f4;--border:#c4b89a;
+  --text:#1c1812;--text2:#2e2a22;--text3:#5c4f3a;
   --label:#5a3e00;--gold:#5a3e00;--gold-light:#f5e8c5;
-  --chip-text:#1e0f52;--chip-bg:#ddd6f5;--chip-border:#bbaee8;
-  --card-bg:#fffef8;--card-front-text:#1e0f52;--card-front-sub:#5a3e00;
-  --card-border:#b09050;--card-keyword:#7a5c10;--card-divider:#c9a84c;--card-meaning-color:#2d1a6b;
-  --back-bg:#1e0f52;--back-border:#4a3a9a;--back-ornament:#b39ddb;--back-text:#d4c8f8;
+  --chip-text:#3d2800;--chip-bg:#f0e4c8;--chip-border:#d4b87a;
+  --card-bg:#fffef8;--card-front-text:#1c1812;--card-front-sub:#5a3e00;
+  --card-border:#b09050;--card-keyword:#7a5c10;--card-divider:#c9a84c;--card-meaning-color:#2e2a22;
+  --back-bg:#f5f0e8;--back-border:#a08040;--back-ornament:#8a6a20;--back-text:#3d2800;
   --pill-up-bg:#e8f5ec;--pill-up-text:#1a5c30;
   --pill-rev-bg:#fff0e8;--pill-rev-text:#6b2800;
   --draw-border:#5a3e00;--draw-text:#5a3e00;--draw-hover-bg:#f5e8c5;
-  --tab-active-bg:#1e0f52;--tab-active-text:#f0ebff;--tab-bg:#e8e2f8;--tab-text:#1e0f52;
-  --grid-card-bg:#fffef8;--grid-card-text:#1e0f52;--grid-card-sub:#7a5c10;--grid-card-border:#b09050;
-  --corr-bg:#f5f0e8;--corr-border:#bdb5a6;--corr-text:#2e2a22;--corr-label:#5a3e00;
-  --tooltip-bg:#1e0f52;--tooltip-text:#f0ebff;
-  --shuffle-bg:#1e0f52;--shuffle-text:#f0ebff;--shuffle-sub:#b0a0e0;
-  --claude-bg:#1e0f52;--claude-text:#f0ebff;
+  --tab-active-bg:#3d2800;--tab-active-text:#faf8f4;--tab-bg:#f0e4c8;--tab-text:#3d2800;
+  --grid-card-bg:#fffef8;--grid-card-text:#1c1812;--grid-card-sub:#7a5c10;--grid-card-border:#b09050;
+  --corr-bg:#f5f0e8;--corr-border:#c4b89a;--corr-text:#2e2a22;--corr-label:#5a3e00;
+  --tooltip-bg:#3d2800;--tooltip-text:#faf8f4;
+  --shuffle-bg:#f5f0e8;--shuffle-text:#1c1812;--shuffle-sub:#5c4f3a;
+  --claude-bg:#f5f0e8;--claude-text:#1c1812;
 }
 
 body{background:var(--bg);color:var(--text);font-family:'Sora',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1.25rem 5rem;}
@@ -92,10 +92,9 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
 
 /* tooltip */
 .tooltip-wrap{position:relative;display:inline-flex;align-items:center}
-.tooltip-icon{width:14px;height:14px;border-radius:50%;background:var(--chip-bg);color:var(--chip-text);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--chip-border);flex-shrink:0;font-family:'Sora',sans-serif}
-.tooltip-box{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--tooltip-bg);color:var(--tooltip-text);font-family:'Sora',sans-serif;font-size:0.72rem;line-height:1.55;padding:.55rem .75rem;border-radius:8px;width:200px;z-index:50;pointer-events:none}
-.tooltip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--tooltip-bg)}
-.tooltip-wrap:hover .tooltip-box,.tooltip-wrap:focus-within .tooltip-box{display:block}
+.tooltip-icon{width:15px;height:15px;border-radius:50%;background:var(--chip-bg);color:var(--chip-text);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--chip-border);flex-shrink:0;font-family:'Sora',sans-serif;padding:0;line-height:1}
+.tooltip-box{display:none;position:fixed;background:var(--tooltip-bg);color:var(--tooltip-text);font-family:'Sora',sans-serif;font-size:0.72rem;line-height:1.6;padding:.6rem .8rem;border-radius:8px;width:min(240px,80vw);z-index:200;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.tooltip-box.visible{display:block}
 
 /* ── Lore ── */
 .lore-section{margin-bottom:1rem}
@@ -694,8 +693,8 @@ function buildCorrHTML(card){
   const elInfo=ELEMENT_INFO[card.element]||'';
   const astInfo=ASTRO_INFO[card.astro]||'';
 
-  const ttEl=elInfo?`<div class="tooltip-wrap"><button class="tooltip-icon" tabindex="0">?</button><div class="tooltip-box">${elInfo}</div></div>`:'';
-  const ttAst=astInfo?`<div class="tooltip-wrap"><button class="tooltip-icon" tabindex="0">?</button><div class="tooltip-box">${astInfo}</div></div>`:'';
+  const ttEl=elInfo?`<button class="tooltip-icon" tabindex="0" data-tip="${elInfo.replace(/"/g,'&quot;')}" onclick="showTooltip(this,event)">?</button>`:'';
+  const ttAst=astInfo?`<button class="tooltip-icon" tabindex="0" data-tip="${astInfo.replace(/"/g,'&quot;')}" onclick="showTooltip(this,event)">?</button>`:'';
 
   const numBlock=numUniv?`<div class="corr-item corr-full">
     <div class="num-label-row">
@@ -726,8 +725,22 @@ function renderPromptList(id,arr){const ul=document.getElementById(id);if(!ul)re
 // ═══════════════════════════════════════════
 function getDateCard(){
   const d=new Date();
-  const seed=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
-  return{card:ALL_CARDS[seed%ALL_CARDS.length],reversed:(seed%7)<2};
+  // Build a seed from the date
+  const raw=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  // Avalanche hash — small input changes produce large output changes,
+  // so consecutive dates land on completely different cards
+  let h=raw^(raw>>>16);
+  h=Math.imul(h,0x45d9f3b);
+  h=h^(h>>>16);
+  h=Math.imul(h,0x45d9f3b);
+  h=h^(h>>>16);
+  const idx=Math.abs(h)%ALL_CARDS.length;
+  // Use a second hash pass for reversed so it's fully independent
+  let r=raw^(raw>>>13);
+  r=Math.imul(r,0x9e3779b9);
+  r=r^(r>>>17);
+  const reversed=(Math.abs(r)%4)===0; // ~25% chance
+  return{card:ALL_CARDS[idx],reversed};
 }
 
 function populateDailyCard(card,reversed){
@@ -952,7 +965,7 @@ async function getInterpretation(){
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})
     });
     const data=await res.json();
@@ -1038,6 +1051,33 @@ const d=new Date();
 document.getElementById('date-line').textContent=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const{card,reversed}=getDateCard();
 populateDailyCard(card,reversed);
+
+// ── Tooltip system ──────────────────────────────────────
+let activeTooltip=null;
+function showTooltip(btn,e){
+  e.stopPropagation();
+  // remove any existing
+  if(activeTooltip){activeTooltip.remove();activeTooltip=null;return;}
+  const tip=document.createElement('div');
+  tip.className='tooltip-box visible';
+  tip.textContent=btn.dataset.tip||'';
+  document.body.appendChild(tip);
+  activeTooltip=tip;
+  // position: centred above button, clamped to viewport
+  const rect=btn.getBoundingClientRect();
+  const tw=Math.min(240,window.innerWidth*0.8);
+  tip.style.width=tw+'px';
+  let left=rect.left+rect.width/2-tw/2;
+  const margin=10;
+  left=Math.max(margin,Math.min(left,window.innerWidth-tw-margin));
+  const top=rect.top-8;
+  tip.style.left=left+'px';
+  tip.style.top=(top-tip.offsetHeight)+'px';
+  // close on outside click
+  setTimeout(()=>document.addEventListener('click',removeTip,{once:true}),10);
+}
+function removeTip(){if(activeTooltip){activeTooltip.remove();activeTooltip=null;}}
+
 </script>
 </body>
 </html>
