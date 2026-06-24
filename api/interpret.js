@@ -11,16 +11,16 @@ export default async function handler(req, res) {
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
-    // Debug: show us exactly what keys arrived
-    if (!body?.prompt) {
-      return res.status(400).json({
-        error: 'Missing prompt',
-        body_keys: Object.keys(body || {}),
-        body_preview: JSON.stringify(body).slice(0, 200),
-      });
+    // Accept both {prompt} (new) and Anthropic {messages} format (old/cached)
+    let prompt = body?.prompt;
+    if (!prompt && body?.messages?.length) {
+      const last = body.messages[body.messages.length - 1];
+      prompt = typeof last.content === 'string' ? last.content : last.content?.[0]?.text;
     }
 
-    const prompt = body.prompt;
+    if (!prompt) {
+      return res.status(400).json({ error: 'Missing prompt' });
+    }
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
