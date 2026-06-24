@@ -183,7 +183,7 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
 .shuffle-card:nth-child(2).animating{animation:shuffleAnim2 1s ease-in-out infinite}
 .shuffle-card:nth-child(3).animating{animation:shuffleAnim3 1.4s ease-in-out infinite}
 .shuffle-title{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;font-style:italic;color:var(--text);margin-bottom:.5rem}
-.shuffle-prompt{font-family:'Sora',sans-serif;font-size:0.85rem;color:var(--text3);text-align:center;min-height:1.4em;transition:opacity .4s;margin-bottom:2rem;max-width:320px}
+.shuffle-prompt{font-family:'Sora',sans-serif;font-size:0.85rem;color:var(--text3);text-align:center;transition:opacity .4s;max-width:300px;line-height:1.5}
 .shuffle-tap-btn{background:var(--tab-active-bg);color:var(--tab-active-text);border:none;border-radius:8px;padding:13px 40px;font-family:'Sora',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
 
 /* reading layout */
@@ -230,8 +230,11 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
 .claude-response{font-family:'Sora',sans-serif;font-size:0.88rem;line-height:1.85;color:var(--text2);white-space:pre-wrap}
 .claude-thinking{font-family:'Sora',sans-serif;font-size:0.82rem;color:var(--text3);font-style:italic}
 
-.restart-btn{margin:1.5rem auto 0;display:block;background:transparent;border:1.5px solid var(--draw-border);color:var(--draw-text);font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:10px 28px;border-radius:6px;cursor:pointer;transition:background .2s}
+.reading-action-row{display:flex;gap:10px;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+.restart-btn{background:transparent;border:1.5px solid var(--draw-border);color:var(--draw-text);font-family:'Sora',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:10px 22px;border-radius:6px;cursor:pointer;transition:background .2s}
 .restart-btn:hover{background:var(--draw-hover-bg)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-spinner{width:16px;height:16px;border:2px solid rgba(250,248,244,.3);border-top-color:var(--tab-active-text);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;flex-shrink:0}
 
 /* daily view */
 #view-daily{width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center}
@@ -340,18 +343,14 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
   <!-- Shuffle screen -->
   <div id="shuffle-screen">
     <div class="shuffle-cards" id="shuffle-cards">
-      <div class="shuffle-card">
-        <svg width="50" height="80" viewBox="0 0 60 96" fill="none"><circle cx="30" cy="48" r="22" stroke="var(--back-ornament)" stroke-width="1"/><line x1="30" y1="10" x2="30" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="8" y1="48" x2="52" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="30,14 35,30 52,30 38,40 43,56 30,46 17,56 22,40 8,30 25,30" stroke="var(--back-ornament)" stroke-width=".8" fill="none"/></svg>
-      </div>
-      <div class="shuffle-card">
-        <svg width="50" height="80" viewBox="0 0 60 96" fill="none"><circle cx="30" cy="48" r="22" stroke="var(--back-ornament)" stroke-width="1"/><line x1="30" y1="10" x2="30" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="8" y1="48" x2="52" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="30,14 35,30 52,30 38,40 43,56 30,46 17,56 22,40 8,30 25,30" stroke="var(--back-ornament)" stroke-width=".8" fill="none"/></svg>
-      </div>
-      <div class="shuffle-card">
-        <svg width="50" height="80" viewBox="0 0 60 96" fill="none"><circle cx="30" cy="48" r="22" stroke="var(--back-ornament)" stroke-width="1"/><line x1="30" y1="10" x2="30" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="8" y1="48" x2="52" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="30,14 35,30 52,30 38,40 43,56 30,46 17,56 22,40 8,30 25,30" stroke="var(--back-ornament)" stroke-width=".8" fill="none"/></svg>
-      </div>
+      <div class="shuffle-card"><svg width="52" height="86" viewBox="0 0 96 96" fill="none" aria-hidden="true"><circle cx="48" cy="48" r="38" stroke="var(--back-ornament)" stroke-width="1"/><circle cx="48" cy="48" r="24" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="48" y1="10" x2="48" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="10" y1="48" x2="86" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="21" y1="21" x2="75" y2="75" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="75" y1="21" x2="21" y2="75" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="48,17 55,40 79,40 61,54 68,77 48,63 28,77 35,54 17,40 41,40" stroke="var(--back-ornament)" stroke-width="1" fill="none"/></svg></div>
+      <div class="shuffle-card"><svg width="52" height="86" viewBox="0 0 96 96" fill="none" aria-hidden="true"><circle cx="48" cy="48" r="38" stroke="var(--back-ornament)" stroke-width="1"/><circle cx="48" cy="48" r="24" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="48" y1="10" x2="48" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="10" y1="48" x2="86" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="21" y1="21" x2="75" y2="75" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="75" y1="21" x2="21" y2="75" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="48,17 55,40 79,40 61,54 68,77 48,63 28,77 35,54 17,40 41,40" stroke="var(--back-ornament)" stroke-width="1" fill="none"/></svg></div>
+      <div class="shuffle-card"><svg width="52" height="86" viewBox="0 0 96 96" fill="none" aria-hidden="true"><circle cx="48" cy="48" r="38" stroke="var(--back-ornament)" stroke-width="1"/><circle cx="48" cy="48" r="24" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="48" y1="10" x2="48" y2="86" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="10" y1="48" x2="86" y2="48" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="21" y1="21" x2="75" y2="75" stroke="var(--back-ornament)" stroke-width=".6"/><line x1="75" y1="21" x2="21" y2="75" stroke="var(--back-ornament)" stroke-width=".6"/><polygon points="48,17 55,40 79,40 61,54 68,77 48,63 28,77 35,54 17,40 41,40" stroke="var(--back-ornament)" stroke-width="1" fill="none"/></svg></div>
     </div>
     <div class="shuffle-title">Shuffling your deck</div>
-    <div class="shuffle-prompt" id="shuffle-prompt">Take a slow breath and settle in.</div>
+    <div style="min-height:3.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:2rem">
+      <div class="shuffle-prompt" id="shuffle-prompt" style="margin-bottom:0">Take a slow breath and settle in.</div>
+    </div>
     <button class="shuffle-tap-btn" id="shuffle-tap-btn" onclick="revealReading()" style="opacity:0;pointer-events:none">Draw your cards</button>
   </div>
 
@@ -852,9 +851,10 @@ function revealReading(){
   else{renderSimpleSpread();}
 
   // reset claude panel
-  document.getElementById('claude-content').innerHTML=`
-    <button class="interpret-btn" id="interpret-btn" onclick="getInterpretation()"><span>Interpret this reading</span></button>
-    <p style="font-family:'Sora',sans-serif;font-size:0.78rem;color:var(--text3);margin-top:.75rem;line-height:1.6">Claude will synthesise all the cards together, considering their positions and how they speak to each other.</p>`;
+  document.getElementById('claude-panel').style.display='none';
+  document.getElementById('claude-content').innerHTML='';
+  const interpretBtn=document.getElementById('interpret-btn');
+  if(interpretBtn){interpretBtn.disabled=false;interpretBtn.innerHTML='✦ Interpret reading';}
   document.getElementById('selected-card-detail').style.display='none';
 }
 
@@ -949,9 +949,11 @@ function selectReadingCard(idx){
 // ═══════════════════════════════════════════
 async function getInterpretation(){
   const btn=document.getElementById('interpret-btn');
-  if(btn)btn.disabled=true;
-  const content=document.getElementById('claude-content');
-  content.innerHTML=`<div class="claude-thinking">✦ Reading the cards together…</div>`;
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="loading-spinner"></span> Interpreting…';}
+  const panel=document.getElementById('claude-panel');
+  panel.style.display='block';
+  const claudeBox=document.getElementById('claude-content');
+  claudeBox.innerHTML='';
 
   const spread=SPREADS[selectedSpread];
   const cardLines=drawnCards.map((entry,i)=>`${spread.positions[i]}: ${entry.card.name}${entry.reversed?' (Reversed)':''}`).join('\n');
@@ -966,13 +968,15 @@ async function getInterpretation(){
     const res=await fetch('/api/interpret',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+      body:JSON.stringify({prompt})
     });
     const data=await res.json();
-    const text=(data.content||[]).map(b=>b.text||'').join('');
-    content.innerHTML=`<div class="claude-response">${text}</div>`;
+    const text=data.text||'';
+    claudeBox.innerHTML=`<div class="claude-response">${text}</div>`;
+    if(btn){btn.disabled=false;btn.innerHTML='✦ Re-interpret';}
   }catch(e){
-    content.innerHTML=`<div class="claude-thinking">Something went wrong. Please try again.</div>`;
+    claudeBox.innerHTML=`<div class="claude-thinking">Something went wrong. Please try again.</div>`;
+    if(btn){btn.disabled=false;btn.innerHTML='✦ Interpret reading';}
   }
 }
 
@@ -984,6 +988,10 @@ function restartReadings(){
   document.getElementById('spread-cards-simple').innerHTML='';
   document.getElementById('spread-cards-celtic').innerHTML='';
   document.getElementById('selected-card-detail').style.display='none';
+  document.getElementById('claude-panel').style.display='none';
+  document.getElementById('claude-content').innerHTML='';
+  const btn=document.getElementById('interpret-btn');
+  if(btn){btn.disabled=false;btn.innerHTML='✦ Interpret reading';}
   const pp=document.getElementById('spread-picker-section');
   pp.style.display='block';
   document.querySelectorAll('.spread-option').forEach(el=>el.classList.remove('selected'));
