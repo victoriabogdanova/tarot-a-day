@@ -4,23 +4,19 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
-
-  // Debug: tell us what env vars are present (not their values)
-  const envKeys = Object.keys(process.env).filter(k => k.includes('GEMINI'));
   if (!apiKey) {
-    return res.status(500).json({
-      error: 'API key not configured',
-      debug_gemini_keys_found: envKeys,
-      debug_node_env: process.env.NODE_ENV,
-    });
-  }
-
-  const { prompt } = req.body;
-  if (!prompt) {
-    return res.status(400).json({ error: 'Missing prompt' });
+    return res.status(500).json({ error: 'API key not configured' });
   }
 
   try {
+    // Parse body whether it arrives as string or object
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    const prompt = body?.prompt;
+
+    if (!prompt) {
+      return res.status(400).json({ error: 'Missing prompt', body_type: typeof req.body });
+    }
+
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
