@@ -963,9 +963,9 @@ async function getInterpretation(){
   const prompt=`You are a thoughtful, grounded tarot reader helping someone learn to read cards and reflect on their life. The person has drawn the following spread:\n\nSpread: ${spread.name}\n\n${cardLines}\n\nCard details:\n${cardDetails}\n\nPlease give a flowing, synthesised interpretation of this reading as a whole. Consider:\n- How the cards speak to each other across positions\n- The overall story or theme the spread reveals\n- What the combination might be pointing to that no single card shows alone\n- End with a short, grounded question or reflection for the person to sit with\n\nTone: warm, insightful, and honest. Not mystical for its own sake. Treat the person as an intelligent adult. Around 250-350 words.`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const res=await fetch('/api/interpret',{
       method:'POST',
-      headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})
     });
     const data=await res.json();
