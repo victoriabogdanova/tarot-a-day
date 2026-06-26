@@ -194,11 +194,15 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
 .spread-cards{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-bottom:1.5rem}
 .spread-slot{display:flex;flex-direction:column;align-items:center;gap:.5rem}
 .slot-label{font-family:'Sora',sans-serif;font-size:0.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--label);text-align:center;max-width:90px}
-.spread-mini-card{width:88px;height:145px;border-radius:10px;background:var(--card-bg);border:1.5px solid var(--card-border);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:.7rem .4rem .5rem;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative}
+.spread-mini-card{width:88px;height:145px;border-radius:10px;border:1.5px solid var(--card-border);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:.7rem .4rem .5rem;cursor:pointer;transition:transform .3s,box-shadow .15s;position:relative;background:var(--back-bg)}
+.spread-mini-card.face-up{background:var(--card-bg)}
 .spread-mini-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .spread-mini-card.selected-card{border-color:var(--tab-active-bg);box-shadow:0 0 0 2px var(--tab-active-bg)}
 .spread-mini-card.reversed-card{transform:rotate(180deg)}
 .spread-mini-card.reversed-card:hover{transform:rotate(180deg) translateY(3px)}
+.spread-mini-card.face-down-indicator{background:var(--back-bg)}
+.mini-back-svg{opacity:.7;margin:auto}
+.mini-tap-hint{font-family:'Sora',sans-serif;font-size:0.42rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--back-text);text-align:center;position:absolute;bottom:.4rem;width:100%}
 .mini-symbol{font-size:1.6rem;margin-bottom:.25rem}
 .mini-name{font-family:'Fraunces',serif;font-size:0.58rem;font-weight:600;color:var(--card-front-text);text-align:center;line-height:1.2}
 .mini-rev{font-family:'Sora',sans-serif;font-size:0.45rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--pill-rev-text);background:var(--pill-rev-bg);padding:1px 5px;border-radius:8px;margin-top:.2rem}
@@ -364,39 +368,38 @@ header{width:100%;max-width:560px;display:flex;align-items:flex-start;justify-co
     <!-- Celtic Cross layout -->
     <div class="celtic-grid" id="spread-cards-celtic" style="display:none"></div>
 
-    <!-- Selected card detail -->
-    <div id="selected-card-detail">
+    <!-- Card detail panel (hidden until a card is tapped twice) -->
+    <div id="selected-card-detail" style="display:none">
       <div class="selected-card-header" id="selected-card-header"></div>
       <div class="panels" style="margin-top:0">
+        <div class="panel visible" id="sr-panel-corr">
+          <div class="panel-label">Correspondences</div>
+          <div class="corr-grid" id="sr-corr-grid"></div>
+        </div>
         <div class="panel visible" id="sr-panel-lore">
           <div class="panel-label">About this card</div>
           <div class="lore-section"><div class="lore-heading">Symbolism &amp; imagery</div><div class="lore-text" id="sr-symbolism"></div></div>
           <div class="lore-section"><div class="lore-heading">Core themes</div><div class="theme-chips" id="sr-themes"></div></div>
-          <div class="lore-section"><div class="lore-heading">In a reading</div><div class="lore-text" id="sr-in-reading"></div></div>
+          <div class="lore-section"><div class="lore-heading">In this position</div><div class="lore-text" id="sr-in-reading"></div></div>
         </div>
-        <div class="panel visible" id="sr-panel-advice">
-          <div class="panel-label" id="sr-advice-label">Invitation</div>
+        <div class="panel visible" id="sr-panel-meaning">
+          <div class="panel-label" id="sr-meaning-label">Reading meaning</div>
           <div class="advice-wrap"><div class="advice-text" id="sr-advice"></div></div>
         </div>
-        <div class="panel visible" id="sr-panel-prompts">
-          <div class="panel-label">Journal prompts</div>
-          <ul class="prompt-list" id="sr-prompts"></ul>
-        </div>
       </div>
     </div>
 
-    <!-- Claude interpretation -->
-    <div class="claude-panel" id="claude-panel">
+    <!-- Interpretation result panel (hidden until interpreted) -->
+    <div class="claude-panel" id="claude-panel" style="display:none">
       <div class="claude-panel-label"><span class="claude-label-star">✦</span> Reading interpretation</div>
-      <div id="claude-content">
-        <button class="interpret-btn" id="interpret-btn" onclick="getInterpretation()">
-          <span>Interpret this reading</span>
-        </button>
-        <p style="font-family:'Sora',sans-serif;font-size:0.78rem;color:var(--text3);margin-top:.75rem;line-height:1.6">Claude will synthesise all the cards together, considering their positions and how they speak to each other.</p>
-      </div>
+      <div id="claude-content"></div>
     </div>
 
-    <button class="restart-btn" onclick="restartReadings()">← New reading</button>
+    <!-- Action row -->
+    <div class="reading-action-row">
+      <button class="restart-btn" onclick="restartReadings()">← New reading</button>
+      <button class="interpret-btn" id="interpret-btn" onclick="getInterpretation()">✦ Interpret reading</button>
+    </div>
   </div>
 </div>
 
@@ -653,6 +656,7 @@ let currentCard=null,currentReversed=false,viewOrientation=false,revealed=false;
 let detailCard=null,detailReversed=false;
 let selectedSpread=null,drawnCards=[],selectedSlotIndex=null;
 let shuffleInterval=null,shufflePromptInterval=null,shuffleDone=false;
+let cardTapState={};  // idx -> 0 face-down, 1 face-up, 2 info-open
 
 // ═══════════════════════════════════════════
 // UTILS
@@ -840,7 +844,7 @@ function revealReading(){
   // draw cards
   const spread=SPREADS[selectedSpread];
   drawnCards=drawUniqueCards(spread.positions.length);
-  selectedSlotIndex=null;
+  selectedSlotIndex=null;cardTapState={};
 
   // show result
   const rr=document.getElementById('reading-result');
@@ -859,14 +863,79 @@ function revealReading(){
 }
 
 function miniCardHTML(entry,idx,posName){
-  const {card,reversed}=entry;
-  const revClass=reversed?' reversed-card':'';
-  const revLabel=reversed?`<div class="mini-rev">Rev</div>`:'';
-  return `<div class="spread-mini-card${revClass}" id="slot-${idx}" onclick="selectReadingCard(${idx})" title="${posName}">
-    <div class="mini-symbol">${card.symbol}</div>
-    <div class="mini-name">${card.name}</div>
-    ${revLabel}
+  // All cards start face-down
+  return `<div class="spread-mini-card" id="slot-${idx}" onclick="tapReadingCard(${idx})" title="Tap to reveal">
+    <div class="mini-back-svg"><svg width="36" height="56" viewBox="0 0 96 96" fill="none"><circle cx="48" cy="48" r="38" stroke="var(--back-ornament)" stroke-width="1.5"/><circle cx="48" cy="48" r="24" stroke="var(--back-ornament)" stroke-width=".8"/><line x1="48" y1="10" x2="48" y2="86" stroke="var(--back-ornament)" stroke-width=".8"/><line x1="10" y1="48" x2="86" y2="48" stroke="var(--back-ornament)" stroke-width=".8"/><line x1="21" y1="21" x2="75" y2="75" stroke="var(--back-ornament)" stroke-width=".8"/><line x1="75" y1="21" x2="21" y2="75" stroke="var(--back-ornament)" stroke-width=".8"/><polygon points="48,17 55,40 79,40 61,54 68,77 48,63 28,77 35,54 17,40 41,40" stroke="var(--back-ornament)" stroke-width="1" fill="none"/></svg></div>
+    <div class="mini-tap-hint">Tap to reveal</div>
   </div>`;
+}
+
+function renderCardFaceUp(entry,idx){
+  const {card,reversed}=entry;
+  const revLabel=reversed?`<div class="mini-rev">Rev</div>`:'';
+  const el=document.getElementById('slot-'+idx);
+  if(!el)return;
+  el.className='spread-mini-card face-up'+(reversed?' reversed-card':'');
+  el.title='Tap for card info';
+  el.innerHTML=`<div class="mini-symbol">${card.symbol}</div><div class="mini-name">${card.name}</div>${revLabel}`;
+}
+
+function tapReadingCard(idx){
+  const state=cardTapState[idx]||0;
+  if(state===0){
+    // Face-down → flip face-up
+    cardTapState[idx]=1;
+    renderCardFaceUp(drawnCards[idx],idx);
+    // hide detail panel if open
+    document.getElementById('selected-card-detail').style.display='none';
+    // deselect others
+    document.querySelectorAll('.spread-mini-card').forEach(el=>el.classList.remove('selected-card'));
+  } else if(state===1){
+    // Face-up → show info
+    cardTapState[idx]=2;
+    document.querySelectorAll('.spread-mini-card').forEach(el=>el.classList.remove('selected-card'));
+    const el=document.getElementById('slot-'+idx);
+    if(el)el.classList.add('selected-card');
+    showReadingCardDetail(idx);
+  } else {
+    // Info open → back to face-up only
+    cardTapState[idx]=1;
+    document.getElementById('selected-card-detail').style.display='none';
+    document.querySelectorAll('.spread-mini-card').forEach(el=>el.classList.remove('selected-card'));
+  }
+}
+
+function showReadingCardDetail(idx){
+  const {card,reversed}=drawnCards[idx];
+  const posName=SPREADS[selectedSpread].positions[idx];
+  const detail=document.getElementById('selected-card-detail');
+  detail.style.display='flex';
+
+  const pill=reversed
+    ?`<span class="orientation-pill reversed" style="display:block;width:fit-content">Reversed</span>`
+    :`<span class="orientation-pill upright" style="display:block;width:fit-content">Upright</span>`;
+
+  document.getElementById('selected-card-header').innerHTML=`
+    <div class="selected-card-symbol">${card.symbol}</div>
+    <div class="selected-card-info">
+      <div class="selected-position">${posName}</div>
+      <div class="selected-name">${card.name}</div>
+      ${pill}
+    </div>`;
+
+  // Correspondences
+  document.getElementById('sr-corr-grid').innerHTML=buildCorrHTML(card);
+
+  // Lore
+  document.getElementById('sr-symbolism').textContent=card.symbolism||'';
+  renderChips('sr-themes',card.themes);
+  document.getElementById('sr-in-reading').textContent=card.in_reading||'';
+
+  // Meaning for this orientation (no journal prompts in readings)
+  document.getElementById('sr-meaning-label').textContent=reversed?'Reversed meaning':'Upright meaning';
+  document.getElementById('sr-advice').textContent=reversed?card.reversed:card.upright;
+
+  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function renderSimpleSpread(){
@@ -913,43 +982,14 @@ function renderCelticCross(){
   });
 }
 
-function selectReadingCard(idx){
-  selectedSlotIndex=idx;
-  document.querySelectorAll('.spread-mini-card').forEach(el=>el.classList.remove('selected-card'));
-  const el=document.getElementById('slot-'+idx);
-  if(el)el.classList.add('selected-card');
 
-  const {card,reversed}=drawnCards[idx];
-  const posName=SPREADS[selectedSpread].positions[idx];
-  const detail=document.getElementById('selected-card-detail');
-  detail.style.display='flex';
-
-  // header
-  const pill=reversed?`<span class="orientation-pill reversed" style="display:block;width:fit-content">Reversed</span>`:`<span class="orientation-pill upright" style="display:block;width:fit-content">Upright</span>`;
-  document.getElementById('selected-card-header').innerHTML=`
-    <div class="selected-card-symbol">${card.symbol}</div>
-    <div class="selected-card-info">
-      <div class="selected-position">${posName}</div>
-      <div class="selected-name">${card.name}</div>
-      ${pill}
-    </div>`;
-
-  document.getElementById('sr-symbolism').textContent=card.symbolism||'';
-  renderChips('sr-themes',card.themes);
-  document.getElementById('sr-in-reading').textContent=card.in_reading||'';
-  document.getElementById('sr-advice-label').textContent=reversed?'Reversed invitation':'Upright invitation';
-  document.getElementById('sr-advice').textContent=reversed?card.advice_reversed:card.advice_upright;
-  renderPromptList('sr-prompts',reversed?card.prompts_reversed:card.prompts_upright);
-
-  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
 
 // ═══════════════════════════════════════════
 // CLAUDE INTERPRETATION
 // ═══════════════════════════════════════════
 async function getInterpretation(){
   const btn=document.getElementById('interpret-btn');
-  if(btn){btn.disabled=true;btn.innerHTML='<span class="loading-spinner"></span> Interpreting…';}
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="loading-spinner"></span>&nbsp;Interpreting…';}
   const panel=document.getElementById('claude-panel');
   panel.style.display='block';
   const claudeBox=document.getElementById('claude-content');
@@ -975,20 +1015,22 @@ async function getInterpretation(){
     claudeBox.innerHTML=`<div class="claude-response">${text}</div>`;
     if(btn){btn.disabled=false;btn.innerHTML='✦ Re-interpret';}
   }catch(e){
-    claudeBox.innerHTML=`<div class="claude-thinking">Something went wrong. Please try again.</div>`;
+    panel.style.display='none';
+    claudeBox.innerHTML='';
     if(btn){btn.disabled=false;btn.innerHTML='✦ Interpret reading';}
   }
 }
 
 function restartReadings(){
-  selectedSpread=null;drawnCards=[];selectedSlotIndex=null;
+  selectedSpread=null;drawnCards=[];selectedSlotIndex=null;cardTapState={};
   clearInterval(shufflePromptInterval);
   document.getElementById('reading-result').style.display='none';
   document.getElementById('shuffle-screen').style.display='none';
   document.getElementById('spread-cards-simple').innerHTML='';
   document.getElementById('spread-cards-celtic').innerHTML='';
   document.getElementById('selected-card-detail').style.display='none';
-  document.getElementById('claude-panel').style.display='none';
+  const cp=document.getElementById('claude-panel');
+  if(cp)cp.style.display='none';
   document.getElementById('claude-content').innerHTML='';
   const btn=document.getElementById('interpret-btn');
   if(btn){btn.disabled=false;btn.innerHTML='✦ Interpret reading';}
